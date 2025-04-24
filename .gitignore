@@ -4,5 +4,22 @@
 *.out
 *.o
 
-# VS Code settings (optional)
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+env/
+venv/
+.rubix/  # your conda env folder (only if it's created in the repo, otherwise ignore this line)
+
+# VS Code settings
 .vscode/
+
+# Jupyter Notebook checkpoints (if ever used)
+.ipynb_checkpoints/
+
+# OS-related junk
+.DS_Store
+Thumbs.db
