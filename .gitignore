@@ -1,3 +1,5 @@
+# .gitignore
+
 # Ignore compiled binaries and object files
 /bin/
 *.exe

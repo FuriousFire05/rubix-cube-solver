@@ -6,90 +6,109 @@ from utils.colors import Color
 
 class RubiksCube:
     def __init__(self):
-        # Initialize the pieces for the Rubik's Cube with correct face orientations.
-        # The cube has 6 faces, each with its own color.
-        # Each face will have a list of pieces (centers, edges, corners).
+        # List to hold all physical pieces (each piece is unique)
+        self.pieces = []
 
-        # Center pieces are unique to each face and are not shared with other faces.
-        # Center pieces
-        self.faces = {
-            Face.U: [Center({Face.U: Color.YELLOW}, "U1")],  # Center piece for Up face at position U1
-            Face.D: [Center({Face.D: Color.WHITE}, "D1")],   # Center piece for Down face at position D1
-            Face.F: [Center({Face.F: Color.BLUE}, "F1")],    # Center piece for Front face at position F1
-            Face.B: [Center({Face.B: Color.GREEN}, "B1")],   # Center piece for Back face at position B1
-            Face.L: [Center({Face.L: Color.ORANGE}, "L1")],  # Center piece for Left face at position L1
-            Face.R: [Center({Face.R: Color.RED}, "R1")],     # Center piece for Right face at position R1
+        # Centralized position map: (Face, row, col) -> Piece
+        self.positions = {}
+
+        # Color scheme per face
+        face_colors = {
+            Face.U: Color.YELLOW,
+            Face.D: Color.WHITE,
+            Face.F: Color.BLUE,
+            Face.B: Color.GREEN,
+            Face.L: Color.ORANGE,
+            Face.R: Color.RED,
         }
 
-        # Edge and corner pieces will be shared between faces (2 for edges, 3 for corners).
-        # Edge pieces
-        self.faces[Face.U].extend([
-            Edge({Face.U: Color.YELLOW, Face.F: Color.BLUE}, "U2"),   # Up-Front edge at position U2
-            Edge({Face.U: Color.YELLOW, Face.R: Color.RED}, "U3"),    # Up-Right edge at position U3
-            Edge({Face.U: Color.YELLOW, Face.L: Color.ORANGE}, "U4"), # Up-Left edge at position U4
-            Edge({Face.U: Color.YELLOW, Face.B: Color.GREEN}, "U5"),  # Up-Back edge at position U5
-        ])
-        self.faces[Face.D].extend([
-            Edge({Face.D: Color.WHITE, Face.F: Color.BLUE}, "D2"),    # Down-Front edge at position D2
-            Edge({Face.D: Color.WHITE, Face.R: Color.RED}, "D3"),     # Down-Right edge at position D3
-            Edge({Face.D: Color.WHITE, Face.L: Color.ORANGE}, "D4"),  # Down-Left edge at position D4
-            Edge({Face.D: Color.WHITE, Face.B: Color.GREEN}, "D5"),   # Down-Back edge at position D5
-        ])
-        self.faces[Face.F].extend([
-            Edge({Face.F: Color.BLUE, Face.U: Color.YELLOW}, "F2"),   # Front-Up edge at position F2
-            Edge({Face.F: Color.BLUE, Face.D: Color.WHITE}, "F3"),    # Front-Down edge at position F3
-            Edge({Face.F: Color.BLUE, Face.L: Color.ORANGE}, "F4"),   # Front-Left edge at position F4
-            Edge({Face.F: Color.BLUE, Face.R: Color.RED}, "F5"),      # Front-Right edge at position F5
-        ])
-        self.faces[Face.B].extend([
-            Edge({Face.B: Color.GREEN, Face.U: Color.YELLOW}, "B2"),  # Back-Up edge at position B2
-            Edge({Face.B: Color.GREEN, Face.D: Color.WHITE}, "B3"),   # Back-Down edge at position B3
-            Edge({Face.B: Color.GREEN, Face.L: Color.ORANGE}, "B4"),  # Back-Left edge at position B4
-            Edge({Face.B: Color.GREEN, Face.R: Color.RED}, "B5"),     # Back-Right edge at position B5
-        ])
+        # -------- Initialize Centers --------
+        center_positions = {
+            Face.U: (Face.U, 1, 1), # Up center
+            Face.D: (Face.D, 1, 1), # Down center
+            Face.F: (Face.F, 1, 1), # Front center
+            Face.B: (Face.B, 1, 1), # Back center
+            Face.L: (Face.L, 1, 1), # Left center
+            Face.R: (Face.R, 1, 1), # Right center
+        }
 
-        # Corner pieces
-        self.faces[Face.U].extend([
-            Corner({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "U6"),  # Up-Front-Left corner at position U6
-            Corner({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.R: Color.RED}, "U7"),   # Up-Front-Right corner at position U7
-        ])
-        self.faces[Face.D].extend([
-            Corner({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "D6"),    # Down-Front-Left corner at position D6
-            Corner({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.R: Color.RED}, "D7"),       # Down-Front-Right corner at position D7
-        ])
-        self.faces[Face.F].extend([
-            Corner({Face.F: Color.BLUE, Face.U: Color.YELLOW, Face.L: Color.ORANGE}, "F6"),   # Front-Up-Left corner at position F6
-            Corner({Face.F: Color.BLUE, Face.U: Color.YELLOW, Face.R: Color.RED}, "F7"),      # Front-Up-Right corner at position F7
-            Corner({Face.F: Color.BLUE, Face.D: Color.WHITE, Face.L: Color.ORANGE}, "F8"),    # Front-Down-Left corner at position F8
-            Corner({Face.F: Color.BLUE, Face.D: Color.WHITE, Face.R: Color.RED}, "F9"),       # Front-Down-Right corner at position F9
-        ])
-        self.faces[Face.B].extend([
-            Corner({Face.B: Color.GREEN, Face.U: Color.YELLOW, Face.L: Color.ORANGE}, "B6"),  # Back-Up-Left corner at position B6
-            Corner({Face.B: Color.GREEN, Face.U: Color.YELLOW, Face.R: Color.RED}, "B7"),     # Back-Up-Right corner at position B7
-            Corner({Face.B: Color.GREEN, Face.D: Color.WHITE, Face.L: Color.ORANGE}, "B8"),   # Back-Down-Left corner at position B8
-            Corner({Face.B: Color.GREEN, Face.D: Color.WHITE, Face.R: Color.RED}, "B9"),      # Back-Down-Right corner at position B9
-        ])
-        self.faces[Face.L].extend([
-            Corner({Face.L: Color.ORANGE, Face.U: Color.YELLOW, Face.F: Color.BLUE}, "L6"),   # Left-Up-Front corner at position L6
-            Corner({Face.L: Color.ORANGE, Face.D: Color.WHITE, Face.F: Color.BLUE}, "L7"),    # Left-Down-Front corner at position L7
-        ])
-        self.faces[Face.R].extend([
-            Corner({Face.R: Color.RED, Face.U: Color.YELLOW, Face.F: Color.BLUE}, "R6"),      # Right-Up-Front corner at position R6
-            Corner({Face.R: Color.RED, Face.D: Color.WHITE, Face.F: Color.BLUE}, "R7"),       # Right-Down-Front corner at position R7
-        ])
+        for face, pos in center_positions.items():
+            center = Center({face: face_colors[face]}, f"{face.name}C") # Create a center piece
+            self.pieces.append(center)                                  # Add to pieces list
+            self.positions[pos] = center                                # Map position to piece
 
+        # -------- Initialize Edges --------
+        edges = [
+            ({Face.U: Color.YELLOW, Face.F: Color.BLUE}, "UF", (Face.U, 2, 1), (Face.F, 0, 1)),
+            ({Face.U: Color.YELLOW, Face.R: Color.RED}, "UR", (Face.U, 1, 2), (Face.R, 0, 1)),
+            ({Face.U: Color.YELLOW, Face.L: Color.ORANGE}, "UL", (Face.U, 1, 0), (Face.L, 0, 1)),
+            ({Face.U: Color.YELLOW, Face.B: Color.GREEN}, "UB", (Face.U, 0, 1), (Face.B, 0, 1)),
+
+            ({Face.D: Color.WHITE, Face.F: Color.BLUE}, "DF", (Face.D, 0, 1), (Face.F, 2, 1)),
+            ({Face.D: Color.WHITE, Face.R: Color.RED}, "DR", (Face.D, 1, 2), (Face.R, 2, 1)),
+            ({Face.D: Color.WHITE, Face.L: Color.ORANGE}, "DL", (Face.D, 1, 0), (Face.L, 2, 1)),
+            ({Face.D: Color.WHITE, Face.B: Color.GREEN}, "DB", (Face.D, 2, 1), (Face.B, 2, 1)),
+
+            ({Face.F: Color.BLUE, Face.L: Color.ORANGE}, "FL", (Face.F, 1, 0), (Face.L, 1, 2)),
+            ({Face.F: Color.BLUE, Face.R: Color.RED}, "FR", (Face.F, 1, 2), (Face.R, 1, 0)),
+            ({Face.B: Color.GREEN, Face.L: Color.ORANGE}, "BL", (Face.B, 1, 0), (Face.L, 1, 0)),
+            ({Face.B: Color.GREEN, Face.R: Color.RED}, "BR", (Face.B, 1, 2), (Face.R, 1, 2)),
+        ]
+
+        for color_map, name, pos1, pos2 in edges:
+            edge = Edge(color_map, name)    # Create an edge piece
+            self.pieces.append(edge)        # Add to pieces list
+            self.positions[pos1] = edge     # Map position to piece
+            self.positions[pos2] = edge     # Map position to piece
+
+        # -------- Initialize Corners --------
+        corners = [
+            ({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "UFL", (Face.U, 2, 0), (Face.F, 0, 0), (Face.L, 0, 2)),
+            ({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.R: Color.RED}, "UFR", (Face.U, 2, 2), (Face.F, 0, 2), (Face.R, 0, 0)),
+            ({Face.U: Color.YELLOW, Face.B: Color.GREEN, Face.L: Color.ORANGE}, "UBL", (Face.U, 0, 0), (Face.B, 0, 2), (Face.L, 0, 0)),
+            ({Face.U: Color.YELLOW, Face.B: Color.GREEN, Face.R: Color.RED}, "UBR", (Face.U, 0, 2), (Face.B, 0, 0), (Face.R, 0, 2)),
+
+            ({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "DFL", (Face.D, 0, 0), (Face.F, 2, 0), (Face.L, 2, 2)),
+            ({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.R: Color.RED}, "DFR", (Face.D, 0, 2), (Face.F, 2, 2), (Face.R, 2, 0)),
+            ({Face.D: Color.WHITE, Face.B: Color.GREEN, Face.L: Color.ORANGE}, "DBL", (Face.D, 2, 0), (Face.B, 2, 2), (Face.L, 2, 0)),
+            ({Face.D: Color.WHITE, Face.B: Color.GREEN, Face.R: Color.RED}, "DBR", (Face.D, 2, 2), (Face.B, 2, 0), (Face.R, 2, 2)),
+        ]
+
+        for color_map, name, pos1, pos2, pos3 in corners:
+            corner = Corner(color_map, name)    # Create a corner piece
+            self.pieces.append(corner)          # Add to pieces list
+            self.positions[pos1] = corner       # Map position to piece
+            self.positions[pos2] = corner       # Map position to piece
+            self.positions[pos3] = corner       # Map position to piece
+
+
+    """*************************************************************************************************************************************************************"""
+
+
+    # -------- Display Function --------
     def display(self):
-        """Display the current state of the cube"""
-        for face, pieces in self.faces.items():
-            print(f"{face} face:")
-            for piece in pieces:
-                print(f"  {piece}")
+        # 3x3 grid for each face
+        face_grids = {face: [[" " for _ in range(3)] for _ in range(3)] for face in Face}
+
+        for (face, row, col), piece in self.positions.items():
+            color = piece.colors.get(face)
+            if color:
+                face_grids[face][row][col] = color.name[0]  # Just first letter of color
+
+        # Print each face in order
+        for face in Face:
+            print(f"{face.name} Face:")
+            for row in face_grids[face]:
+                print(" ".join(row))
             print()
 
+
+    """*************************************************************************************************************************************************************"""
+
+
+    # -------- Rotation Functions --------
     def U(self):
         """Perform a U rotation (Up face clockwise)."""
-        # Update the positions of the pieces based on the U rotation
-        # This will affect the pieces on the U, F, B, and D faces.
         pass
 
     def U_prime(self):
