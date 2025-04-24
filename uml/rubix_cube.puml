@@ -1,0 +1,78 @@
+// uml/rubix_cube.puml
+
+@startuml rubix_cube
+
+' Define Color Enum
+enum Color {
+  +YELLOW
+  +WHITE
+  +BLUE
+  +GREEN
+  +RED
+  +ORANGE
+}
+
+' Define Face Enum
+enum Face {
+  +U
+  +D
+  +F
+  +B
+  +R
+  +L
+}
+
+' Define Piece Class
+class Piece {
+  #faces: dict
+  #position: str
+  +__init__(faces: dict, position: str)
+  +get_faces(): dict
+  +get_position(): str
+}
+
+' Define Center Class (inherits from Piece)
+class Center {
+  +face: Face
+  +__init__(face: Face, position: str)
+}
+
+' Define Edge Class (inherits from Piece)
+class Edge {
+  +face_1: Face
+  +face_2: Face
+  +__init__(face_1: Face, face_2: Face, position: str)
+}
+
+' Define Corner Class (inherits from Piece)
+class Corner {
+  +face_1: Face
+  +face_2: Face
+  +face_3: Face
+  +__init__(face_1: Face, face_2: Face, face_3: Face, position: str)
+}
+
+' Define Cube Class
+class Cube {
+  #pieces: dict
+  +__init__()
+  +U()
+  +U_prime()
+  +F()
+  +F_prime()
+  +B()
+  +B_prime()
+  +L()
+  +L_prime()
+  +R()
+  +R_prime()
+  +display()
+}
+
+' Define relationships between classes
+Piece <|-- Center
+Piece <|-- Edge
+Piece <|-- Corner
+Cube o-- "many" Piece : contains
+
+@enduml

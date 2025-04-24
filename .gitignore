@@ -23,3 +23,9 @@ venv/
 # OS-related junk
 .DS_Store
 Thumbs.db
+
+# Ignore PNG output files
+uml/*.png
+
+# Ignore the PlantUML JAR file
+uml/plantuml.jar
