@@ -39,47 +39,47 @@ class RubiksCube:
 
         # -------- Initialize Edges --------
         edges = [
-            ({Face.U: Color.YELLOW, Face.F: Color.BLUE}, "UF", (Face.U, 2, 1), (Face.F, 0, 1)),
-            ({Face.U: Color.YELLOW, Face.R: Color.RED}, "UR", (Face.U, 1, 2), (Face.R, 0, 1)),
-            ({Face.U: Color.YELLOW, Face.L: Color.ORANGE}, "UL", (Face.U, 1, 0), (Face.L, 0, 1)),
-            ({Face.U: Color.YELLOW, Face.B: Color.GREEN}, "UB", (Face.U, 0, 1), (Face.B, 0, 1)),
+            ({Face.U: Color.YELLOW, Face.F: Color.BLUE}, "UF", (Face.U, 2, 1), (Face.F, 0, 1)),     # Up-Front edge
+            ({Face.U: Color.YELLOW, Face.R: Color.RED}, "UR", (Face.U, 1, 2), (Face.R, 0, 1)),      # Up-Right edge
+            ({Face.U: Color.YELLOW, Face.L: Color.ORANGE}, "UL", (Face.U, 1, 0), (Face.L, 0, 1)),   # Up-Left edge
+            ({Face.U: Color.YELLOW, Face.B: Color.GREEN}, "UB", (Face.U, 0, 1), (Face.B, 0, 1)),    # Up-Back edge
 
-            ({Face.D: Color.WHITE, Face.F: Color.BLUE}, "DF", (Face.D, 0, 1), (Face.F, 2, 1)),
-            ({Face.D: Color.WHITE, Face.R: Color.RED}, "DR", (Face.D, 1, 2), (Face.R, 2, 1)),
-            ({Face.D: Color.WHITE, Face.L: Color.ORANGE}, "DL", (Face.D, 1, 0), (Face.L, 2, 1)),
-            ({Face.D: Color.WHITE, Face.B: Color.GREEN}, "DB", (Face.D, 2, 1), (Face.B, 2, 1)),
+            ({Face.D: Color.WHITE, Face.F: Color.BLUE}, "DF", (Face.D, 0, 1), (Face.F, 2, 1)),      # Down-Front edge
+            ({Face.D: Color.WHITE, Face.R: Color.RED}, "DR", (Face.D, 1, 2), (Face.R, 2, 1)),       # Down-Right edge
+            ({Face.D: Color.WHITE, Face.L: Color.ORANGE}, "DL", (Face.D, 1, 0), (Face.L, 2, 1)),    # Down-Left edge
+            ({Face.D: Color.WHITE, Face.B: Color.GREEN}, "DB", (Face.D, 2, 1), (Face.B, 2, 1)),     # Down-Back edge
 
-            ({Face.F: Color.BLUE, Face.L: Color.ORANGE}, "FL", (Face.F, 1, 0), (Face.L, 1, 2)),
-            ({Face.F: Color.BLUE, Face.R: Color.RED}, "FR", (Face.F, 1, 2), (Face.R, 1, 0)),
-            ({Face.B: Color.GREEN, Face.L: Color.ORANGE}, "BL", (Face.B, 1, 0), (Face.L, 1, 0)),
-            ({Face.B: Color.GREEN, Face.R: Color.RED}, "BR", (Face.B, 1, 2), (Face.R, 1, 2)),
+            ({Face.F: Color.BLUE, Face.L: Color.ORANGE}, "FL", (Face.F, 1, 0), (Face.L, 1, 2)),     # Front-Left edge
+            ({Face.F: Color.BLUE, Face.R: Color.RED}, "FR", (Face.F, 1, 2), (Face.R, 1, 0)),        # Front-Right edge
+            ({Face.B: Color.GREEN, Face.L: Color.ORANGE}, "BL", (Face.B, 1, 0), (Face.L, 1, 0)),    # Back-Left edge
+            ({Face.B: Color.GREEN, Face.R: Color.RED}, "BR", (Face.B, 1, 2), (Face.R, 1, 2)),       # Back-Right edge
         ]
 
         for color_map, name, pos1, pos2 in edges:
             edge = Edge(color_map, name)    # Create an edge piece
             self.pieces.append(edge)        # Add to pieces list
-            self.positions[pos1] = edge     # Map position to piece
-            self.positions[pos2] = edge     # Map position to piece
+            self.positions[pos1] = edge     # Map position 1 to piece
+            self.positions[pos2] = edge     # Map position 2 to piece
 
         # -------- Initialize Corners --------
         corners = [
-            ({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "UFL", (Face.U, 2, 0), (Face.F, 0, 0), (Face.L, 0, 2)),
-            ({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.R: Color.RED}, "UFR", (Face.U, 2, 2), (Face.F, 0, 2), (Face.R, 0, 0)),
-            ({Face.U: Color.YELLOW, Face.B: Color.GREEN, Face.L: Color.ORANGE}, "UBL", (Face.U, 0, 0), (Face.B, 0, 2), (Face.L, 0, 0)),
-            ({Face.U: Color.YELLOW, Face.B: Color.GREEN, Face.R: Color.RED}, "UBR", (Face.U, 0, 2), (Face.B, 0, 0), (Face.R, 0, 2)),
+            ({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "UFL", (Face.U, 2, 0), (Face.F, 0, 0), (Face.L, 0, 2)),  # Up-Front-Left corner
+            ({Face.U: Color.YELLOW, Face.F: Color.BLUE, Face.R: Color.RED}, "UFR", (Face.U, 2, 2), (Face.F, 0, 2), (Face.R, 0, 0)),     # Up-Front-Right corner
+            ({Face.U: Color.YELLOW, Face.B: Color.GREEN, Face.L: Color.ORANGE}, "UBL", (Face.U, 0, 0), (Face.B, 0, 2), (Face.L, 0, 0)), # Up-Back-Left corner
+            ({Face.U: Color.YELLOW, Face.B: Color.GREEN, Face.R: Color.RED}, "UBR", (Face.U, 0, 2), (Face.B, 0, 0), (Face.R, 0, 2)),    # Up-Back-Right corner
 
-            ({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "DFL", (Face.D, 0, 0), (Face.F, 2, 0), (Face.L, 2, 2)),
-            ({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.R: Color.RED}, "DFR", (Face.D, 0, 2), (Face.F, 2, 2), (Face.R, 2, 0)),
-            ({Face.D: Color.WHITE, Face.B: Color.GREEN, Face.L: Color.ORANGE}, "DBL", (Face.D, 2, 0), (Face.B, 2, 2), (Face.L, 2, 0)),
-            ({Face.D: Color.WHITE, Face.B: Color.GREEN, Face.R: Color.RED}, "DBR", (Face.D, 2, 2), (Face.B, 2, 0), (Face.R, 2, 2)),
+            ({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.L: Color.ORANGE}, "DFL", (Face.D, 0, 0), (Face.F, 2, 0), (Face.L, 2, 2)),   # Down-Front-Left corner
+            ({Face.D: Color.WHITE, Face.F: Color.BLUE, Face.R: Color.RED}, "DFR", (Face.D, 0, 2), (Face.F, 2, 2), (Face.R, 2, 0)),      # Down-Front-Right corner
+            ({Face.D: Color.WHITE, Face.B: Color.GREEN, Face.L: Color.ORANGE}, "DBL", (Face.D, 2, 0), (Face.B, 2, 2), (Face.L, 2, 0)),  # Down-Back-Left corner
+            ({Face.D: Color.WHITE, Face.B: Color.GREEN, Face.R: Color.RED}, "DBR", (Face.D, 2, 2), (Face.B, 2, 0), (Face.R, 2, 2)),     # Down-Back-Right corner
         ]
 
         for color_map, name, pos1, pos2, pos3 in corners:
             corner = Corner(color_map, name)    # Create a corner piece
             self.pieces.append(corner)          # Add to pieces list
-            self.positions[pos1] = corner       # Map position to piece
-            self.positions[pos2] = corner       # Map position to piece
-            self.positions[pos3] = corner       # Map position to piece
+            self.positions[pos1] = corner       # Map position 1 to piece
+            self.positions[pos2] = corner       # Map position 2 to piece
+            self.positions[pos3] = corner       # Map position 3 to piece
 
 
     """*************************************************************************************************************************************************************"""
@@ -88,6 +88,14 @@ class RubiksCube:
     # -------- Display Function --------
     def display(self):
         # 3x3 grid for each face
+        """
+        {
+            Face.U: [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]],
+            Face.D: [[" ", " ", " "], [" ", " ", " "], [" ", " ", " "]],
+            Face.F: ...
+            ...
+        }
+        """
         face_grids = {face: [[" " for _ in range(3)] for _ in range(3)] for face in Face}
 
         for (face, row, col), piece in self.positions.items():
