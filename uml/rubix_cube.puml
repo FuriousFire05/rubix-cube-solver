@@ -55,9 +55,13 @@ class Corner {
 ' Define Cube Class
 class Cube {
   #pieces: dict
+
   +__init__()
+  +display()
   +U()
   +U_prime()
+  +D()
+  +D_prime()
   +F()
   +F_prime()
   +B()
@@ -66,7 +70,13 @@ class Cube {
   +L_prime()
   +R()
   +R_prime()
-  +display()
+
+  #_rotate_face_cw(face: Face)
+  #_rotate_face_acw(face: Face)
+  #_rotate_edge_cw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
+  #_rotate_edge_acw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
+  #_rotate_corner_cw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
+  #_rotate_corner_acw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
 }
 
 ' Define relationships between classes

@@ -113,13 +113,86 @@ class RubiksCube:
 
     """*************************************************************************************************************************************************************"""
 
+    # -------- Helper Functions(CW, ACW) --------
+    def _rotate_face_cw(self, face: Face):
+        """Rotate the face 3x3 grid clockwise."""
+        new_positions = {}
+        for row in range(3):
+            for col in range(3):
+                old_pos = (face, row, col)
+                new_row, new_col = col, 2 - row  # Clockwise mapping
+                new_positions[(face, new_row, new_col)] = self.positions[old_pos]
+        self.positions.update(new_positions)
 
+    def _rotate_face_acw(self, face: Face):
+        """Rotate the face 3x3 grid anti-clockwise."""
+        new_positions = {}
+        for row in range(3):
+            for col in range(3):
+                old_pos = (face, row, col)
+                new_row, new_col = 2 - col, row  # Anti-clockwise mapping
+                new_positions[(face, new_row, new_col)] = self.positions[old_pos]
+        self.positions.update(new_positions)
+
+    def _rotate_edge_cw(self, pos1, pos2, pos3, pos4):
+        """Rotate edge positions clockwise."""
+        temp1 = self.positions[pos1]
+        temp2 = self.positions[pos2]
+        temp3 = self.positions[pos3]
+        temp4 = self.positions[pos4]
+        self.positions[pos2] = temp1
+        self.positions[pos3] = temp2
+        self.positions[pos4] = temp3
+        self.positions[pos1] = temp4
+    
+    def _rotate_edge_acw(self, pos1, pos2, pos3, pos4):
+        """Rotate edge positions anti-clockwise."""
+        temp1 = self.positions[pos1]
+        temp2 = self.positions[pos2]
+        temp3 = self.positions[pos3]
+        temp4 = self.positions[pos4]
+        self.positions[pos4] = temp3
+        self.positions[pos3] = temp2
+        self.positions[pos2] = temp1
+        self.positions[pos1] = temp4
+
+    def _rotate_corner_cw(self, pos1, pos2, pos3, pos4):
+        """Rotate corner positions clockwise."""
+        temp1 = self.positions[pos1]
+        temp2 = self.positions[pos2]
+        temp3 = self.positions[pos3]
+        temp4 = self.positions[pos4]
+        self.positions[pos2] = temp1
+        self.positions[pos3] = temp2
+        self.positions[pos4] = temp3
+        self.positions[pos1] = temp4
+
+    def _rotate_corner_acw(self, pos1, pos2, pos3, pos4):
+        """Rotate corner positions anti-clockwise."""
+        temp1 = self.positions[pos1]
+        temp2 = self.positions[pos2]
+        temp3 = self.positions[pos3]
+        temp4 = self.positions[pos4]
+        self.positions[pos4] = temp1
+        self.positions[pos3] = temp4
+        self.positions[pos2] = temp3
+        self.positions[pos1] = temp2
+
+    
     # -------- Rotation Functions --------
     def U(self):
         """Perform a U rotation (Up face clockwise)."""
         pass
 
     def U_prime(self):
+        """Perform a U rotation (Up face clockwise)."""
+        pass
+
+    def D(self):
+        """Perform a U rotation (Up face clockwise)."""
+        pass
+
+    def D_prime(self):
         """Perform a U' rotation (Up face counter-clockwise)."""
         pass
 
