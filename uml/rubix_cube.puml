@@ -50,7 +50,7 @@ class Corner {
 }
 
 ' Define Cube Class
-class Cube {
+class RubiksCube {
   #pieces: dict
   #matrix: list
 
@@ -81,6 +81,6 @@ class Cube {
 Piece <|-- Center
 Piece <|-- Edge
 Piece <|-- Corner
-Cube o-- "many" Piece : contains
+RubiksCube o-- "many" Piece : contains
 
 @enduml
