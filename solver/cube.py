@@ -58,12 +58,12 @@ class RubiksCube:
                 ({Face.D: Color.WHITE,  Face.B: Color.GREEN, Face.R: Color.RED},    "DBR",  (2, 0, 0)),    # Down-Back-Right corner
             ])
         ]
-        # fmt: on
 
         # Creating Objects
         for piece_class, pieces in piece_definitions:
             for colors, name, (x, y, z) in pieces:
                 self.matrix[x][y][z] = self.pieces[name] = piece_class(colors, (x, y, z))
+        # fmt: on
 
     # -------- Display Function --------
     def display(self):

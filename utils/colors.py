@@ -12,7 +12,7 @@ class Color(Enum):
     RED     = "#FF0000"  # Red
     ORANGE  = "#FFA500"  # Orange
     # fmt: on
-    
+
     def __str__(self):
         """Return the color name in a readable format."""
         return self.name.capitalize()

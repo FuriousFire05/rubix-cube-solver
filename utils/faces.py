@@ -13,7 +13,7 @@ class Face(Enum):
     L = Color.ORANGE    # Left face is Orange
     R = Color.RED       # Right face is Red
     # fmt: on
-    
+
     def __str__(self):
         """Return the face name in a readable format."""
         return self.name.capitalize()
