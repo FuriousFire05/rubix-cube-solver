@@ -27,7 +27,7 @@ class RubiksCube:
                 ({Face.L: Color.ORANGE},  "L",  (0, 1, 1)),     # Left center
             ]),
 
-            (Edge ,[
+            (Edge, [
                 ({Face.U: Color.YELLOW, Face.F: Color.BLUE},    "UF",   (1, 2, 2)),     # Up-Front edge
                 ({Face.U: Color.YELLOW, Face.R: Color.RED},     "UR",   (2, 2, 1)),     # Up-Right edge
                 ({Face.U: Color.YELLOW, Face.L: Color.ORANGE},  "UL",   (0, 2, 1)),     # Up-Left edge
@@ -44,7 +44,7 @@ class RubiksCube:
                 ({Face.B: Color.GREEN,  Face.R: Color.RED},      "BR",   (2, 1, 0)),    # Back-Right edge
             ]),
 
-            (Corner ,[
+            (Corner, [
                 ({Face.U: Color.YELLOW, Face.F: Color.BLUE,  Face.L: Color.ORANGE}, "UFL",  (0, 2, 2)),    # Up-Front-Left corner
                 ({Face.U: Color.YELLOW, Face.F: Color.BLUE,  Face.R: Color.RED},    "UFR",  (2, 2, 2)),    # Up-Front-Right corner
                 ({Face.U: Color.YELLOW, Face.B: Color.GREEN, Face.L: Color.ORANGE}, "UBL",  (0, 2, 0)),    # Up-Back-Left corner
@@ -64,10 +64,26 @@ class RubiksCube:
 
     # -------- Display Function --------
     def display(self):
-        """Display the cube in a readable format."""
-        pass
+        U = self._get_face(Face.U)
+        D = self._get_face(Face.D)
+        F = self._get_face(Face.F)
+        B = self._get_face(Face.B)
+        R = self._get_face(Face.R)
+        L = self._get_face(Face.L)
 
-    # -------- Helper Functions(CW, ACW) --------
+        def print_row(row):
+            return " ".join(row)
+
+        print()
+        for row in U:
+            print("      " + print_row(row))
+        for i in range(3):
+            print(print_row(L[i]) + " " + print_row(F[i]) + " " + print_row(R[i]) + " " + print_row(B[i]))
+        for row in D:
+            print("      " + print_row(row))
+        print()
+
+    # -------- Helper Functions --------
     def _rotate_face_cw(self, face: Face):
         """Rotate the face 3x3 grid clockwise."""
         pass
@@ -75,6 +91,59 @@ class RubiksCube:
     def _rotate_face_acw(self, face: Face):
         """Rotate the face 3x3 grid anti-clockwise."""
         pass
+
+    def _get_face(self, face: Face):
+        """Return a 3x3 array of color initials for the given face."""
+        face_grid = [["" for _ in range(3)] for _ in range(3)]
+
+        if face == Face.U:
+            y = 2
+            for x in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - z][x] = self._get_color(piece, face)
+
+        elif face == Face.D:
+            y = 0
+            for x in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[z][x] = self._get_color(piece, face)
+
+        elif face == Face.F:
+            z = 2
+            for x in range(3):
+                for y in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - y][x] = self._get_color(piece, face)
+
+        elif face == Face.B:
+            z = 0
+            for x in range(3):
+                for y in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[y][2 - x] = self._get_color(piece, face)
+
+        elif face == Face.R:
+            x = 2
+            for y in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - y][z] = self._get_color(piece, face)
+
+        elif face == Face.L:
+            x = 0
+            for y in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - y][2 - z] = self._get_color(piece, face)
+        return face_grid
+    
+    def _get_color(self, piece, face):
+        """Helper to get color initial for a given face."""
+        if face in piece.colors:
+            return piece.colors[face].name[0]  # like 'Y', 'B', etc.
+        return " "  # Empty if no color on that face (e.g., centers, edges)
 
     def _get_row(self, face: Face, row: int):
         """Return a row from a face."""
