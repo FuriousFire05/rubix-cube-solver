@@ -14,7 +14,7 @@ __pycache__/
 # Virtual environments
 env/
 venv/
-.rubix/  # your conda env folder (only if it's created in the repo, otherwise ignore this line)
+.rubix/
 
 # VS Code settings
 .vscode/
@@ -31,3 +31,11 @@ uml/*.png
 
 # Ignore the PlantUML JAR file
 uml/plantuml.jar
+
+# Ignore pytest cache files
+.pytest_cache/
+
+# Ignore coverage reports
+htmlcov/
+coverage_html_report/
+.coverage

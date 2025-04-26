@@ -4,9 +4,10 @@ from solver.pieces import Center, Edge, Corner
 from utils.faces import Face
 from utils.colors import Color
 
+
 class RubiksCube:
     def __init__(self):
-        """Initialize a 3x3x3 Rubik's Cube."""''
+        """Initialize a 3x3x3 Rubik's Cube.""" ""
         # Dictionary to hold all physical pieces (each piece is unique)
         self.pieces = {}
 
@@ -17,6 +18,7 @@ class RubiksCube:
         # UP: YELLOW, DOWN: WHITE, FRONT: BLUE, BACK: GREEN, RIGHT: RED, LEFT: ORANGE
 
         # Initializing Pieces
+        # fmt: off
         piece_definitions = [
             (Center, [
                 ({Face.U: Color.YELLOW},  "U",  (1, 2, 1)),     # Up center
@@ -56,6 +58,7 @@ class RubiksCube:
                 ({Face.D: Color.WHITE,  Face.B: Color.GREEN, Face.R: Color.RED},    "DBR",  (2, 0, 0)),    # Down-Back-Right corner
             ])
         ]
+        # fmt: on
 
         # Creating Objects
         for piece_class, pieces in piece_definitions:
@@ -71,6 +74,7 @@ class RubiksCube:
         R = self._get_face(Face.R)
         L = self._get_face(Face.L)
 
+        # fmt: off
         def print_row(row):
             return " ".join(row)
 
@@ -82,6 +86,7 @@ class RubiksCube:
         for row in D:
             print("      " + print_row(row))
         print()
+        # fmt: on
 
     # -------- Helper Functions --------
     def _rotate_face_cw(self, face: Face):
@@ -138,7 +143,7 @@ class RubiksCube:
                     piece = self.matrix[x][y][z]
                     face_grid[2 - y][2 - z] = self._get_color(piece, face)
         return face_grid
-    
+
     def _get_color(self, piece, face):
         """Helper to get color initial for a given face."""
         if face in piece.colors:

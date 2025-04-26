@@ -1,0 +1,24 @@
+# .coveragerc
+
+[run]
+# What to measure
+branch = True
+source = 
+    solver
+    utils
+
+[report]
+# Format the report nicely
+show_missing = True
+skip_covered = True
+precision = 2
+
+[html]
+# Optional: Output HTML report
+directory = coverage_html_report
+
+[paths]
+# Handle different local paths (for example if run on Windows and Linux)
+source =
+    solver
+    utils

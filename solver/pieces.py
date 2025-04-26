@@ -24,12 +24,11 @@ class Piece:
 
     def get_faces(self):
         """Return the face-color map (colors assigned to each face)."""
-        return self.colorsS
+        return self.colors
 
 
 class Center(Piece):
     def __init__(self, colors: Dict[Face, Color], position: Tuple[int, int, int]):
-        
         # Center piece must have exactly 1 face and color
         if len(colors) != 1:
             raise ValueError("Center piece must have exactly 1 color and 1 face.")

@@ -2,10 +2,12 @@
 
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from solver.cube import RubiksCube
 from utils.faces import Face
+
 
 def test_cube_initial_state():
     cube = RubiksCube()
@@ -25,6 +27,7 @@ def test_cube_initial_state():
     assert L[1][1] == "O", f"Expected Orange at L center, got {L[1][1]}"
 
     print("✅ Initial cube state test passed!")
+
 
 if __name__ == "__main__":
     test_cube_initial_state()
