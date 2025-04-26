@@ -39,3 +39,6 @@ uml/plantuml.jar
 htmlcov/
 coverage_html_report/
 .coverage
+
+# Ignore ruff files
+.ruff_cache/
