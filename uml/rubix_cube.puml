@@ -25,36 +25,34 @@ enum Face {
 ' Define Piece Class
 class Piece {
   #faces: dict
-  #position: str
-  +__init__(faces: dict, position: str)
+  #position: tuple
+
+  +__init__(colors: dict, position: tuple)
+  +__repr__()
   +get_faces(): dict
-  +get_position(): str
+  +set_position(position: tuple)
+  +get_position(): tuple
 }
 
 ' Define Center Class (inherits from Piece)
 class Center {
-  +face: Face
-  +__init__(face: Face, position: str)
+  +__init__(colors: dict, position: tuple)
 }
 
 ' Define Edge Class (inherits from Piece)
 class Edge {
-  +face_1: Face
-  +face_2: Face
-  +__init__(face_1: Face, face_2: Face, position: str)
+  +__init__(colors: dict, position: tuple)
 }
 
 ' Define Corner Class (inherits from Piece)
 class Corner {
-  +face_1: Face
-  +face_2: Face
-  +face_3: Face
-  +__init__(face_1: Face, face_2: Face, face_3: Face, position: str)
+  +__init__(colors: dict, position: tuple)
 }
 
 ' Define Cube Class
 class Cube {
   #pieces: dict
+  #matrix: list
 
   +__init__()
   +display()
@@ -73,10 +71,10 @@ class Cube {
 
   #_rotate_face_cw(face: Face)
   #_rotate_face_acw(face: Face)
-  #_rotate_edge_cw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
-  #_rotate_edge_acw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
-  #_rotate_corner_cw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
-  #_rotate_corner_acw(pos1: tuple, pos2: tuple, pos3: tuple, pos4: tuple)
+  #_get_face(face: Face): list
+  #_get_colors(piece, face): str
+  #_get_row(face: Face, row: int)
+  #_set_row(face: Face, row: int, values)
 }
 
 ' Define relationships between classes
