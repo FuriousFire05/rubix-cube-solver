@@ -15,6 +15,7 @@ class Piece:
         self.position = position  # Position in 3D space (x, y, z)
 
     def __repr__(self):
+        """String representation of the piece for debugging."""
         return f"{self.__class__.__name__}(Colors: {self.colors}, Position: {self.position})"
 
     def set_position(self, position: Tuple[int, int, int]):
@@ -23,11 +24,12 @@ class Piece:
 
     def get_faces(self):
         """Return the face-color map (colors assigned to each face)."""
-        return self.colors
+        return self.colorsS
 
 
 class Center(Piece):
     def __init__(self, colors: Dict[Face, Color], position: Tuple[int, int, int]):
+        
         # Center piece must have exactly 1 face and color
         if len(colors) != 1:
             raise ValueError("Center piece must have exactly 1 color and 1 face.")

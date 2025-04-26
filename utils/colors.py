@@ -11,7 +11,9 @@ class Color(Enum):
     ORANGE = "#FFA500" # Orange
 
     def __str__(self):
+        """Return the color name in a readable format."""
         return self.name.capitalize()
 
     def __repr__(self):
+        """Return the color name in a format suitable for debugging."""
         return f"Color.{self.name}"
