@@ -24,11 +24,11 @@ enum Face {
 
 ' Define Piece Class
 class Piece {
-  #faces: dict
+  #colors: dict
   #position: tuple
+  #name: str
 
   +__init__(colors: dict, position: tuple)
-  +__repr__()
   +get_faces(): dict
   +set_position(position: tuple)
   +get_position(): tuple
@@ -69,12 +69,14 @@ class RubiksCube {
   +R()
   +R_prime()
 
-  #_rotate_face_cw(face: Face)
-  #_rotate_face_acw(face: Face)
+  #_rebuild_matrix()
+  #_rotate_edges(edges: list, direction: str)
+  #_rotate_corners(corners: list, direction: str)
+  #_fetch_positions(pieces: list): list
+  #_apply_positions(pieces: list, positions: list)
+  #_rotate_positions(positions: list, direction: str)
   #_get_face(face: Face): list
-  #_get_colors(piece, face): str
-  #_get_row(face: Face, row: int)
-  #_set_row(face: Face, row: int, values)
+  #_get_color(piece, face): str
 }
 
 ' Define relationships between classes
