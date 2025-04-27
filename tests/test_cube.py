@@ -3,11 +3,12 @@
 import sys
 import os
 
+import pytest
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from solver.cube import RubiksCube
 from utils.faces import Face
-
 
 def test_cube_initial_state():
     cube = RubiksCube()
@@ -26,8 +27,29 @@ def test_cube_initial_state():
     assert R[1][1] == "R", f"Expected Red at R center, got {R[1][1]}"
     assert L[1][1] == "O", f"Expected Orange at L center, got {L[1][1]}"
 
-    print("✅ Initial cube state test passed!")
+def test_get_face_invalid_face():
+    cube = RubiksCube()
+
+    with pytest.raises(KeyError):
+        cube._get_face("InvalidFace")  # because _get_face expects a Face Enum, not string
 
 
-if __name__ == "__main__":
-    test_cube_initial_state()
+def test_centers_created():
+    cube = RubiksCube()
+
+    centers = [piece for piece in cube.pieces.values() if piece.__class__.__name__ == "Center"]
+    assert len(centers) == 6, f"Expected 6 centers, got {len(centers)}"
+
+
+def test_edges_created():
+    cube = RubiksCube()
+
+    edges = [piece for piece in cube.pieces.values() if piece.__class__.__name__== "Edge"]
+    assert len(edges) == 12, f"Expected 12 edges, got {len(edges)}"
+
+
+def test_corners_created():
+    cube = RubiksCube()
+
+    corners = [piece for piece in cube.pieces.values() if piece.__class__.__name__ == "Corner"]
+    assert len(corners) == 8, f"Expected 8 corners, got {len(corners)}"
