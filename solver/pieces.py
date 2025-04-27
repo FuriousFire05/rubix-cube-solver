@@ -17,6 +17,10 @@ class Piece:
     def __repr__(self):
         """String representation of the piece for debugging."""
         return f"{self.__class__.__name__}(Colors: {self.colors}, Position: {self.position})"
+    
+    def get_position(self) -> Tuple[int, int, int]:
+        """Return the position of the piece."""
+        return self.position
 
     def set_position(self, position: Tuple[int, int, int]):
         """Update the position of the piece."""

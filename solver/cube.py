@@ -31,9 +31,9 @@ class RubiksCube:
 
             (Edge, [
                 ({Face.U: Color.YELLOW, Face.F: Color.BLUE},    "UF",   (1, 2, 2)),     # Up-Front edge
-                ({Face.U: Color.YELLOW, Face.R: Color.RED},     "UR",   (2, 2, 1)),     # Up-Right edge
                 ({Face.U: Color.YELLOW, Face.L: Color.ORANGE},  "UL",   (0, 2, 1)),     # Up-Left edge
                 ({Face.U: Color.YELLOW, Face.B: Color.GREEN},   "UB",   (1, 2, 0)),     # Up-Back edge
+                ({Face.U: Color.YELLOW, Face.R: Color.RED},     "UR",   (2, 2, 1)),     # Up-Right edge
 
                 ({Face.D: Color.WHITE,  Face.F: Color.BLUE},     "DF",   (1, 0, 2)),    # Down-Front edge
                 ({Face.D: Color.WHITE,  Face.R: Color.RED},      "DR",   (2, 0, 1)),    # Down-Right edge
@@ -89,13 +89,48 @@ class RubiksCube:
         # fmt: on
 
     # -------- Helper Functions --------
-    def _rotate_face_cw(self, face: Face):
-        """Rotate the face 3x3 grid clockwise."""
-        pass
+    def _rebuild_matrix(self):
+        """Rebuild the matrix from the pieces."""
+        for piece in self.pieces.values():
+            x, y, z = piece.get_position()
+            self.matrix[x][y][z] = piece
 
-    def _rotate_face_acw(self, face: Face):
-        """Rotate the face 3x3 grid anti-clockwise."""
-        pass
+    def _fetch_positions(self, pieces: list[str]) -> list[tuple[int, int, int]]:
+        """Fetch the positions of the pieces in the cube."""
+        positions = []
+        for piece in pieces:
+            if piece not in self.pieces:
+                raise ValueError(f"Piece {piece} not found in cube.")
+            positions.append(self.pieces[piece].get_position())
+        return positions
+    
+    def _apply_positions(self, pieces: list[str], positions: list[tuple[int, int, int]]):
+        """Apply the positions to the pieces in the cube."""
+        for piece, position in zip(pieces, positions):
+            self.pieces[piece].set_position(position)
+
+    def _rotate_positions(self, positions: list[tuple[int, int, int]], direction: str):
+        """Rotate the positions in the specified direction."""
+        if direction == "cw":
+            return [positions[-1]] + positions[:-1]  # Rotate right
+        elif direction == "acw":
+            return positions[1:] + [positions[0]]    # Rotate left
+        else:
+            raise ValueError("Invalid Direction, must be 'cw' or 'acw'.")
+    
+    def _rotate_edges(self, edges: list[str], direction: str):
+        """Rotate the edge 3x3 grid in the specified direction."""
+        # edges = [edge1, edge2, edge3, edge4] where each edge is a string like "UF", "UL", etc.
+        positions = self._fetch_positions(edges)
+        positions = self._rotate_positions(positions, direction)  # Rotate the positions to the right
+        self._apply_positions(edges, positions)
+
+    def _rotate_corners(self, corners: list[str], direction: str):
+        """Rotate the corner 3x3 grid clockwise."""
+        # corners = [corner1, corner2, corner3, corner4] where each corner is a string like "UFL", "UFR", etc.
+        positions = self._fetch_positions(corners)
+        positions = self._rotate_positions(positions, direction)  # Rotate the positions to the right
+        self._apply_positions(corners, positions)
 
     def _get_face(self, face: Face):
         """Return a 3x3 array of color initials for the given face."""
@@ -150,17 +185,10 @@ class RubiksCube:
             return piece.colors[face].name[0]  # like 'Y', 'B', etc.
         return " "  # Empty if no color on that face (e.g., centers, edges)
 
-    def _get_row(self, face: Face, row: int):
-        """Return a row from a face."""
-        pass
-
-    def _set_row(self, face: Face, row: int, values):
-        """Set a row on a face."""
-        pass
-
     # -------- Rotation Functions --------
     def U(self):
         """Perform a U rotation (Up face clockwise)."""
+
         pass
 
     def U_prime(self):
