@@ -4,6 +4,7 @@ from solver.pieces import Center, Edge, Corner
 from utils.faces import Face
 from utils.colors import Color
 
+
 class RubiksCube:
     def __init__(self):
         """Initialize a 3x3x3 Rubik's Cube.""" ""
@@ -91,8 +92,8 @@ class RubiksCube:
         """Convert the cube matrix to a string representation."""
 
         self._rebuild_matrix()
-        
-        for y in [2,1,0]:
+
+        for y in [2, 1, 0]:
             for z in range(3):
                 for x in range(3):
                     piece = self.matrix[x][y][z]
@@ -118,8 +119,10 @@ class RubiksCube:
                 raise ValueError(f"Piece {piece} not found in cube.")
             positions.append(self.pieces[piece].get_position())
         return positions
-    
-    def _apply_positions(self, pieces: list[str], positions: list[tuple[int, int, int]]):
+
+    def _apply_positions(
+        self, pieces: list[str], positions: list[tuple[int, int, int]]
+    ):
         """Apply the positions to the pieces in the cube."""
         for piece, position in zip(pieces, positions):
             self.pieces[piece].set_position(position)
@@ -129,22 +132,26 @@ class RubiksCube:
         if direction == "acw":
             return [positions[-1]] + positions[:-1]  # Rotate right
         elif direction == "cw":
-            return positions[1:] + [positions[0]]    # Rotate left
+            return positions[1:] + [positions[0]]  # Rotate left
         else:
             raise ValueError("Invalid Direction, must be 'cw' or 'acw'.")
-    
+
     def _rotate_edges(self, edges: list[str], direction: str):
         """Rotate the edge 3x3 grid in the specified direction."""
         # edges = [edge1, edge2, edge3, edge4] where each edge is a string like "UF", "UL", etc.
         positions = self._fetch_positions(edges)
-        positions = self._rotate_positions(positions, direction)  # Rotate the positions to the right
+        positions = self._rotate_positions(
+            positions, direction
+        )  # Rotate the positions to the right
         self._apply_positions(edges, positions)
 
     def _rotate_corners(self, corners: list[str], direction: str):
         """Rotate the corner 3x3 grid clockwise."""
         # corners = [corner1, corner2, corner3, corner4] where each corner is a string like "UFL", "UFR", etc.
         positions = self._fetch_positions(corners)
-        positions = self._rotate_positions(positions, direction)  # Rotate the positions to the right
+        positions = self._rotate_positions(
+            positions, direction
+        )  # Rotate the positions to the right
         self._apply_positions(corners, positions)
 
     def _get_face(self, face: Face):
@@ -152,7 +159,7 @@ class RubiksCube:
         # Validate the face
         if type(face) != Face:
             raise KeyError(f"Invalid face: {face}. Must be a Face Enum.")
-        
+
         face_grid = [["" for _ in range(3)] for _ in range(3)]
         self._rebuild_matrix()  # Ensure the matrix is up to date
 

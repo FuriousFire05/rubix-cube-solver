@@ -6,7 +6,9 @@ from typing import Dict, Tuple
 
 
 class Piece:
-    def __init__(self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]):
+    def __init__(
+        self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]
+    ):
         """
         :param colors: A dictionary mapping faces to colors (e.g., {Face.U: Color.YELLOW})
         :param position: 3D tuple (x, y, z) representing the position in the 3x3x3 Rubik's cube grid
@@ -18,7 +20,7 @@ class Piece:
     def __repr__(self):
         """String representation of the piece for debugging."""
         return f"{self.__class__.__name__}(Colors: {self.colors}, Position: {self.position})"
-    
+
     def get_position(self) -> Tuple[int, int, int]:
         """Return the position of the piece."""
         return self.position
@@ -33,7 +35,9 @@ class Piece:
 
 
 class Center(Piece):
-    def __init__(self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]):
+    def __init__(
+        self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]
+    ):
         # Center piece must have exactly 1 face and color
         if len(colors) != 1:
             raise ValueError("Center piece must have exactly 1 color and 1 face.")
@@ -41,7 +45,9 @@ class Center(Piece):
 
 
 class Edge(Piece):
-    def __init__(self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]):
+    def __init__(
+        self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]
+    ):
         # Edge piece must have exactly 2 faces and colors
         if len(colors) != 2:
             raise ValueError("Edge piece must have exactly 2 colors and 2 faces.")
@@ -49,7 +55,9 @@ class Edge(Piece):
 
 
 class Corner(Piece):
-    def __init__(self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]):
+    def __init__(
+        self, colors: Dict[Face, Color], name: str, position: Tuple[int, int, int]
+    ):
         # Corner piece must have exactly 3 faces and colors
         if len(colors) != 3:
             raise ValueError("Corner piece must have exactly 3 colors and 3 faces.")
