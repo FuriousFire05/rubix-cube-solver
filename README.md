@@ -60,9 +60,8 @@ pytest
 
 ## 🛠️ Todo
 
-- Implement rotations
-- Implement solving algorithms
 - Polish cube display
+- Implement solving algorithms
 - Add visualization (optional)
 
 ## ✨ Notes
