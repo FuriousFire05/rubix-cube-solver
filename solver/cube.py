@@ -157,7 +157,7 @@ class RubiksCube:
     def _get_face(self, face: Face):
         """Return a 3x3 array of color initials for the given face."""
         # Validate the face
-        if type(face) != Face:
+        if type(face) is not Face:
             raise KeyError(f"Invalid face: {face}. Must be a Face Enum.")
 
         face_grid = [["" for _ in range(3)] for _ in range(3)]
