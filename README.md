@@ -78,9 +78,9 @@ pytest
 
 ## 👤 Author
 
-[FuriousFire05](https://github.com/FuriousFire05)
+[Furious-Fire](https://github.com/Furious-Fire)
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-Copyright (c) 2025 [FuriousFire05](https://github.com/FuriousFire05)
+Copyright (c) 2025 [Furious-Fire](https://github.com/Furious-Fire)
