@@ -66,28 +66,28 @@ class RubiksCube:
                 self.matrix[x][y][z] = self.pieces[name] = piece_class(colors, name,  (x, y, z))
         # fmt: on
 
-    # -------- Display Function --------
+    # ------- Display Functions -------
     def display(self):
         """Display the cube in a 2D format."""
 
-        U = self._get_face(Face.U)
-        D = self._get_face(Face.D)
-        F = self._get_face(Face.F)
-        B = self._get_face(Face.B)
-        R = self._get_face(Face.R)
-        L = self._get_face(Face.L)
+        U = self.get_face(Face.U)
+        D = self.get_face(Face.D)
+        F = self.get_face(Face.F)
+        B = self.get_face(Face.B)
+        R = self.get_face(Face.R)
+        L = self.get_face(Face.L)
 
         # fmt: off
         def print_row(row):
-            return " ".join(row)
+            return "\t".join(row)
 
         print()
         for row in U:
-            print("      " + print_row(row))
+            print("\t\t\t" + print_row(row))
         for i in range(3):
-            print(print_row(L[i]) + " " + print_row(F[i]) + " " + print_row(R[i]) + " " + print_row(B[i]))
+            print(print_row(L[i]) + "\t" + print_row(F[i]) + "\t" + print_row(R[i]) + "\t" + print_row(B[i]))
         for row in D:
-            print("      " + print_row(row))
+            print("\t\t\t" + print_row(row))
         print()
         # fmt: on
 
@@ -107,155 +107,7 @@ class RubiksCube:
                 print()
             print("\n")
 
-    # -------- Helper Functions --------
-    def _rebuild_matrix(self):
-        """Rebuild the matrix from the pieces."""
-        for piece in self.pieces.values():
-            x, y, z = piece.get_position()
-            self.matrix[x][y][z] = piece
-
-    def _fetch_components(self, pieces: list[str]) -> list[list]:
-        """Fetch the components of the pieces in the cube."""
-        positions = []
-        faces = []
-        for piece in pieces:
-            if piece not in self.pieces:
-                raise ValueError(f"Piece {piece} not found in cube.")
-            positions.append(self.pieces[piece].get_position())
-            faces.append(self.pieces[piece].get_faces())
-        print(f"Fetched positions: {positions}")
-        print(f"Fetched faces: {faces}")
-        return [positions, faces]
-
-    def _apply_components(self, pieces: list[str], components: list[list]):
-        """Apply the positions to the pieces in the cube."""
-        positions, faces = components
-        for piece, position, face in zip(pieces, positions, faces):
-            print(f"Applying to piece {piece}: position={position}, faces={face}")
-            self.pieces[piece].set_position(position)
-            self.pieces[piece].set_faces(face)
-
-    def _rotate_components(self, components: list[list], direction: str, f: str):
-        """Rotate the positions and faces in the specified direction."""
-        positions, faces = components
-
-        if f not in ["U", "D", "F", "B", "R", "L"]:
-            raise ValueError(
-                "Invalid face, must be one of 'U', 'D', 'F', 'B', 'R', 'L'."
-            )
-        # Rotate positions
-        if direction == "acw":
-            positions.insert(0, positions.pop())  # Rotate positions counter-clockwise
-        elif direction == "cw":
-            positions.append(positions.pop(0))  # Rotate positions clockwise
-        else:
-            raise ValueError("Invalid Direction, must be 'cw' or 'acw'.")
-
-        # Rotate faces
-        for face_map in faces:
-            rotated_faces = {}
-            for color, face in face_map.items():
-                if f in ["U", "D"]:
-                    if direction == "cw":
-                        # Counter-clockwise rotation of face mappings
-                        if face == Face.F:
-                            rotated_faces[color] = Face.L
-                        elif face == Face.L:
-                            rotated_faces[color] = Face.B
-                        elif face == Face.B:
-                            rotated_faces[color] = Face.R
-                        elif face == Face.R:
-                            rotated_faces[color] = Face.F
-                        else:
-                            rotated_faces[color] = face  # No change for other faces
-                    else:
-                        # Clockwise rotation of face mappings
-                        if face == Face.F:
-                            rotated_faces[color] = Face.R
-                        elif face == Face.R:
-                            rotated_faces[color] = Face.B
-                        elif face == Face.B:
-                            rotated_faces[color] = Face.L
-                        elif face == Face.L:
-                            rotated_faces[color] = Face.F
-                        else:
-                            rotated_faces[color] = face  # No change for other faces
-                elif f in ["F", "B"]:
-                    if direction == "cw":
-                        # Clockwise rotation of face mappings
-                        if face == Face.D:
-                            rotated_faces[color] = Face.L
-                        elif face == Face.L:
-                            rotated_faces[color] = Face.U
-                        elif face == Face.U:
-                            rotated_faces[color] = Face.R
-                        elif face == Face.R:
-                            rotated_faces[color] = Face.D
-                        else:
-                            rotated_faces[color] = face  # No change for other faces
-                    else:
-                        # Counter-Clockwise rotation of face mappings
-                        if face == Face.D:
-                            rotated_faces[color] = Face.R
-                        elif face == Face.R:
-                            rotated_faces[color] = Face.U
-                        elif face == Face.U:
-                            rotated_faces[color] = Face.L
-                        elif face == Face.L:
-                            rotated_faces[color] = Face.D
-                        else:
-                            rotated_faces[color] = face  # No change for other faces
-                else:
-                    if direction == "cw":
-                        # Clockwise rotation of face mappings
-                        if face == Face.D:
-                            rotated_faces[color] = Face.F
-                        elif face == Face.F:
-                            rotated_faces[color] = Face.U
-                        elif face == Face.U:
-                            rotated_faces[color] = Face.B
-                        elif face == Face.B:
-                            rotated_faces[color] = Face.D
-                        else:
-                            rotated_faces[color] = face  # No change for other faces
-                    else:
-                        # Counter-Clockwise rotation of face mappings
-                        if face == Face.D:
-                            rotated_faces[color] = Face.B
-                        elif face == Face.B:
-                            rotated_faces[color] = Face.U
-                        elif face == Face.U:
-                            rotated_faces[color] = Face.F
-                        elif face == Face.F:
-                            rotated_faces[color] = Face.D
-                        else:
-                            rotated_faces[color] = face  # No change for other faces
-            face_map.clear()
-            face_map.update(rotated_faces)
-
-        return [positions, faces]
-
-    def _rotate_edges(self, edges: list[str], direction: str, face: str):
-        """Rotate the edge 3x3 grid in the specified direction."""
-        # edges = [edge1, edge2, edge3, edge4] where each edge is a string like "UF", "UL", etc.
-        print(f"Rotating edges: {edges} in direction {direction}")
-        components = self._fetch_components(edges)
-        components = self._rotate_components(
-            components, direction, face
-        )  # Rotate the positions to the right
-        self._apply_components(edges, components)
-
-    def _rotate_corners(self, corners: list[str], direction: str, face: str):
-        """Rotate the corner 3x3 grid clockwise."""
-        # corners = [corner1, corner2, corner3, corner4] where each corner is a string like "UFL", "UFR", etc.
-        print(f"Rotating corners: {corners} in direction {direction}")
-        components = self._fetch_components(corners)
-        components = self._rotate_components(
-            components, direction, face
-        )  # Rotate the positions to the right
-        self._apply_components(corners, components)
-
-    def _get_face(self, face: Face):
+    def get_face(self, face: Face):
         """Return a 3x3 array of color initials for the given face."""
         # Validate the face
         if type(face) is not Face:
@@ -306,15 +158,273 @@ class RubiksCube:
                     piece = self.matrix[x][y][z]
                     face_grid[2 - y][z] = self._get_color(piece, face)
         return face_grid
+    
+    
 
+    # -------- Helper Functions --------
     def _get_color(self, piece, face):
         """Fetch the color of a piece for a specific face."""
         if piece is None:
-            return " "  # Return a blank space for empty positions
+            return "BLACK"  # Return a blank space for empty positions
         for color, piece_face in piece.get_faces().items():
             if piece_face == face:
-                return color.name[0]  # Return the first letter of the color name
-        return " "  # Return a blank space if no matching face is found
+                return color.name  # Return the color name
+        print(f"Warning: No matching face found for piece {piece} on face {face}")
+        print(f"Piece faces: {piece.get_faces()}")
+        return "BLACK"  # Return a blank space if no matching face is found
+    
+    def _rebuild_matrix(self):
+        """Rebuild the matrix from the pieces."""
+        for piece in self.pieces.values():
+            x, y, z = piece.get_position()
+            self.matrix[x][y][z] = piece
+
+    def _fetch_components(self, pieces: list[str]) -> list[list]:
+        """Fetch the components of the pieces in the cube."""
+        positions = []
+        faces = []
+        names = []
+        for piece in pieces:
+            if piece not in self.pieces:
+                raise ValueError(f"Piece {piece} not found in cube.")
+            positions.append(self.pieces[piece].get_position())
+            faces.append(self.pieces[piece].get_faces())
+            names.append(self.pieces[piece].get_name())
+        return [positions, faces, names]
+
+    def _apply_components(self, pieces: list[str], components: list[list]):
+        """Apply the positions to the pieces in the cube."""
+        positions = components[0]
+        faces = components[1]
+        names = components[2]
+
+        for piece, position, face, name in zip(pieces, positions, faces, names):
+            self.pieces[piece].set_position(position)
+            self.pieces[piece].set_faces(face)
+            self.pieces[piece].set_name(name)
+
+    def _rotate_components(self, components: list[list], direction: str, f: str):
+        """Rotate the positions and faces in the specified direction."""
+        positions = components[0]
+        faces = components[1]
+        names = components[2]
+
+        if f not in ["U", "D", "F", "B", "R", "L"]:
+            raise ValueError(
+                "Invalid face, must be one of 'U', 'D', 'F', 'B', 'R', 'L'."
+            )
+        # Rotate positions
+        if direction == "acw":
+            # names.insert(0, positions.pop())  # Rotate names counter-clockwise
+            positions.insert(0, positions.pop())  # Rotate positions counter-clockwise
+        elif direction == "cw":
+            # names.append(names.pop(0))  # Rotate names clockwise
+            positions.append(positions.pop(0))  # Rotate positions clockwise
+        else:
+            raise ValueError("Invalid Direction, must be 'cw' or 'acw'.")
+
+        # Rotate faces
+        for face_map in faces:
+            rotated_faces = {}
+            for color, face in face_map.items():
+                if f == "U":
+                    if direction == "cw":
+                        # Counter-clockwise rotation of face mappings
+                        if face == Face.U:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.R
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face  # No change for other faces
+                    else:
+                        # Clockwise rotation of face mappings
+                        if face == Face.U:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.R
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face  # No change for other faces
+                elif f == "D":
+                    if direction == "cw":
+                        # Counter-clockwise rotation of face mappings
+                        if face == Face.D:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.R
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face
+                    else:
+                        # Clockwise rotation of face mappings
+                        if face == Face.D:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.R
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face
+                elif f == "R":
+                    if direction == "cw":
+                        # Counter-clockwise rotation of face mappings
+                        if face == Face.R:
+                            rotated_faces[color] = Face.R
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face
+                    else:
+                        # Clockwise rotation of face mappings
+                        if face == Face.R:
+                            rotated_faces[color] = Face.R
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face
+                elif f == "L":
+                    if direction == "cw":
+                        # Counter-clockwise rotation of face mappings
+                        if face == Face.L:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face
+                    else:
+                        # Clockwise rotation of face mappings
+                        if face == Face.L:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.F:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.B:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.F
+                        else:
+                            rotated_faces[color] = face
+                elif f == "B":
+                    if direction == "cw":
+                        # Counter-clockwise rotation of face mappings
+                        if face == Face.B:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.R
+                        else:
+                            rotated_faces[color] = face
+                    else:
+                        # Clockwise rotation of face mappings
+                        if face == Face.B:
+                            rotated_faces[color] = Face.B
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.R
+                        else:
+                            rotated_faces[color] = face
+                elif f == "F":
+                    if direction == "cw":
+                        # Counter-clockwise rotation of face mappings
+                        if face == Face.F:
+                            rotated_faces[color] = Face.F
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.R
+                        else:
+                            rotated_faces[color] = face
+                    else:
+                        # Clockwise rotation of face mappings
+                        if face == Face.F:
+                            rotated_faces[color] = Face.F
+                        elif face == Face.R:
+                            rotated_faces[color] = Face.U
+                        elif face == Face.U:
+                            rotated_faces[color] = Face.L
+                        elif face == Face.L:
+                            rotated_faces[color] = Face.D
+                        elif face == Face.D:
+                            rotated_faces[color] = Face.R
+                        else:
+                            rotated_faces[color] = face
+            face_map.clear()
+            face_map.update(rotated_faces)
+
+        return [positions, faces, names]
+
+    def _rotate_edges(self, edges: list[str], direction: str, face: str):
+        """Rotate the edge 3x3 grid in the specified direction."""
+        # edges = [edge1, edge2, edge3, edge4] where each edge is a string like "UF", "UL", etc.
+        components = self._fetch_components(edges)
+        components = self._rotate_components(
+            components, direction, face
+        )  # Rotate the positions to the right
+        self._apply_components(edges, components)
+        self._rebuild_matrix()  # Ensure the matrix is up to date
+
+    def _rotate_corners(self, corners: list[str], direction: str, face: str):
+        """Rotate the corner 3x3 grid clockwise."""
+        # corners = [corner1, corner2, corner3, corner4] where each corner is a string like "UFL", "UFR", etc.
+        components = self._fetch_components(corners)
+        components = self._rotate_components(
+            components, direction, face
+        )  # Rotate the positions to the right
+        self._apply_components(corners, components)
+        self._rebuild_matrix()  # Ensure the matrix is up to date
 
     # -------- Rotation Functions --------
     def U(self):
@@ -329,13 +439,13 @@ class RubiksCube:
 
     def D(self):
         """Perform a D rotation (Down face clockwise)."""
-        self._rotate_edges(["DF", "DL", "DB", "DR"], "acw", "D")
-        self._rotate_corners(["DFL", "DBL", "DBR", "DFR"], "acw", "D")
+        self._rotate_edges(["DF", "DR", "DB", "DL"], "cw", "D")
+        self._rotate_corners(["DFL", "DFR", "DBR", "DBL"], "cw", "D")
 
     def D_prime(self):
         """Perform a D' rotation (Down face counter-clockwise)."""
-        self._rotate_edges(["DF", "DL", "DB", "DR"], "cw", "D")
-        self._rotate_corners(["DFL", "DBL", "DBR", "DFR"], "cw", "D")
+        self._rotate_edges(["DF", "DR", "DB", "DL"], "acw", "D")
+        self._rotate_corners(["DFL", "DFR", "DBR", "DBL"], "acw", "D")
 
     def F(self):
         """Perform an F rotation (Front face clockwise)."""
@@ -349,13 +459,13 @@ class RubiksCube:
 
     def B(self):
         """Perform a B rotation (Back face clockwise)."""
-        self._rotate_edges(["UB", "BR", "DB", "BL"], "acw", "B")
-        self._rotate_corners(["UBL", "UBR", "DBR", "DBL"], "acw", "B")
+        self._rotate_edges(["UB", "BL", "DB", "BR"], "cw", "B")
+        self._rotate_corners(["UBL", "DBL", "DBR", "UBR"], "cw", "B")
 
     def B_prime(self):
         """Perform a B' rotation (Back face counter-clockwise)."""
-        self._rotate_edges(["UB", "BR", "DB", "BL"], "cw", "B")
-        self._rotate_corners(["UBL", "UBR", "DBR", "DBL"], "cw", "B")
+        self._rotate_edges(["UB", "BL", "DB", "BR"], "acw", "B")
+        self._rotate_corners(["UBL", "DBL", "DBR", "UBR"], "acw", "B")
 
     def R(self):
         """Perform an R rotation (Right face clockwise)."""
@@ -369,10 +479,10 @@ class RubiksCube:
 
     def L(self):
         """Perform an L rotation (Left face clockwise)."""
-        self._rotate_edges(["UL", "BL", "DL", "FL"], "acw", "L")
-        self._rotate_corners(["UFL", "UBL", "DBL", "DFL"], "acw", "L")
+        self._rotate_edges(["UL", "FL", "DL", "BL"], "cw", "L")
+        self._rotate_corners(["UFL", "DFL", "DBL", "UBL"], "cw", "L")
 
     def L_prime(self):
         """Perform an L' rotation (Left face counter-clockwise)."""
-        self._rotate_edges(["UL", "BL", "DL", "FL"], "cw", "L")
-        self._rotate_corners(["UFL", "UBL", "DBL", "DFL"], "cw", "L")
+        self._rotate_edges(["UL", "FL", "DL", "BL"], "acw", "L")
+        self._rotate_corners(["UFL", "DFL", "DBL", "UBL"], "acw", "L")

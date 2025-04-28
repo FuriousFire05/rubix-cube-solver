@@ -39,6 +39,14 @@ class Piece:
         for color, face in zip(temp.keys(), c.values()):
             self.colors[color] = face
 
+    def get_name(self) -> str:
+        """Return the name of the piece."""
+        return self.name
+    
+    def set_name(self, name: str):
+        """Update the name of the piece."""
+        self.name = name
+
 
 class Center(Piece):
     def __init__(
