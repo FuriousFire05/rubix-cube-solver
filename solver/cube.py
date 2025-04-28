@@ -203,7 +203,7 @@ class RubiksCube:
             self.pieces[piece].set_faces(face)
             self.pieces[piece].set_name(name)
 
-    def _rotate_components(self, components: list[list], direction: str, f: str):
+    def _rotate_components(self, components: list[list], direction: str, f: str) -> list[list]:
         """Rotate the positions and faces in the specified direction."""
         positions = components[0]
         faces = components[1]
@@ -410,20 +410,20 @@ class RubiksCube:
         """Rotate the edge 3x3 grid in the specified direction."""
         # edges = [edge1, edge2, edge3, edge4] where each edge is a string like "UF", "UL", etc.
         components = self._fetch_components(edges)
-        components = self._rotate_components(
+        rotated_components = self._rotate_components(
             components, direction, face
         )  # Rotate the positions to the right
-        self._apply_components(edges, components)
+        self._apply_components(edges, rotated_components)
         self._rebuild_matrix()  # Ensure the matrix is up to date
 
     def _rotate_corners(self, corners: list[str], direction: str, face: str):
         """Rotate the corner 3x3 grid clockwise."""
         # corners = [corner1, corner2, corner3, corner4] where each corner is a string like "UFL", "UFR", etc.
         components = self._fetch_components(corners)
-        components = self._rotate_components(
+        rotated_components = self._rotate_components(
             components, direction, face
         )  # Rotate the positions to the right
-        self._apply_components(corners, components)
+        self._apply_components(corners, rotated_components)
         self._rebuild_matrix()  # Ensure the matrix is up to date
 
     # -------- Rotation Functions --------
