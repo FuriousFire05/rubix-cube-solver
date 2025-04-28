@@ -8,3 +8,7 @@ from solver.cube import RubiksCube
 if __name__ == "__main__":
     cube = RubiksCube()
     cube.display()
+
+    cube.L()
+
+    cube.display()
