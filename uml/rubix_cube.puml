@@ -28,25 +28,27 @@ class Piece {
   #position: tuple
   #name: str
 
-  +__init__(colors: dict, position: tuple)
-  +get_faces(): dict
-  +set_position(position: tuple)
+  +__init__(colors: dict, name: str, position: tuple)
+  +__repr__(): str
   +get_position(): tuple
+  +set_position(position: tuple)
+  +get_faces(): dict
+  +set_faces(colors: dict) 
 }
 
 ' Define Center Class (inherits from Piece)
 class Center {
-  +__init__(colors: dict, position: tuple)
+  +__init__(colors: dict, name: str, position: tuple)
 }
 
 ' Define Edge Class (inherits from Piece)
 class Edge {
-  +__init__(colors: dict, position: tuple)
+  +__init__(colors: dict, name: str, position: tuple)
 }
 
 ' Define Corner Class (inherits from Piece)
 class Corner {
-  +__init__(colors: dict, position: tuple)
+  +__init__(colors: dict, name: str, position: tuple)
 }
 
 ' Define Cube Class
@@ -56,28 +58,42 @@ class RubiksCube {
 
   +__init__()
   +display()
+  +_matrix()
+  +get_face(face: Face)
+  
   +U()
-  +U_prime()
   +D()
-  +D_prime()
   +F()
-  +F_prime()
   +B()
-  +B_prime()
-  +L()
-  +L_prime()
   +R()
+  +L()
+  +U_prime()
+  +D_prime()
+  +F_prime()
+  +B_prime()
   +R_prime()
+  +L_prime()
 
+  #_get_color(piece, face)
   #_rebuild_matrix()
-  #_rotate_edges(edges: list, direction: str)
-  #_rotate_corners(corners: list, direction: str)
-  #_fetch_positions(pieces: list): list
-  #_apply_positions(pieces: list, positions: list)
-  #_rotate_positions(positions: list, direction: str)
-  #_get_face(face: Face): list
-  #_get_color(piece, face): str
+  #_rearrange_pieces(keys: list)
+  #_fetch_components(pieces: list)
+  #_apply_components(pieces: list, components: list)
+  #_rotate_components(components: list, f: str)
+  #_rotate_pieces(pieces: list, face: str)
 }
+
+' Define Button Class
+class Button {
+  #rect
+  #color
+  #text
+  #font
+
+  +__init__(x, y, width, height, color, text, font_size)
+  +draw(screen)
+  +is_clicked(mouse_pos)
+} 
 
 ' Define relationships between classes
 Piece <|-- Center

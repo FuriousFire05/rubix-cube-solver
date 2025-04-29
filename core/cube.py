@@ -160,7 +160,7 @@ class RubiksCube:
         return face_grid
 
     # -------- Helper Functions --------
-    def _get_color(self, piece, face):
+    def _get_color(self, piece, face) -> str:
         """Fetch the color of a piece for a specific face."""
         if piece is None:
             return "BLACK"  # Return a blank space for empty positions
@@ -297,58 +297,47 @@ class RubiksCube:
 
         return [positions, faces, names]
 
-    def _rotate_edges(self, edges: list[str], face: str):
+    def _rotate_pieces(self, pieces: list[str], face: str):
         """Rotate the edge 3x3 grid in the specified direction."""
         # edges = [edge1, edge2, edge3, edge4] where each edge is a string like "UF", "UL", etc.
-        components = self._fetch_components(edges)
+        components = self._fetch_components(pieces)
         rotated_components = self._rotate_components(
             components, face
         )  # Rotate the positions to the right
-        self._apply_components(edges, rotated_components)
-        self._rearrange_pieces(edges)
-        self._rebuild_matrix()
-
-    def _rotate_corners(self, corners: list[str], face: str):
-        """Rotate the corner 3x3 grid clockwise."""
-        # corners = [corner1, corner2, corner3, corner4] where each corner is a string like "UFL", "UFR", etc.
-        components = self._fetch_components(corners)
-        rotated_components = self._rotate_components(
-            components, face
-        )  # Rotate the positions to the right
-        self._apply_components(corners, rotated_components)
-        self._rearrange_pieces(corners)
+        self._apply_components(pieces, rotated_components)
+        self._rearrange_pieces(pieces)
         self._rebuild_matrix()
 
     # -------- Rotation Functions --------
     def U(self):
         """Perform a U rotation (Up face clockwise)."""
-        self._rotate_edges(["UF", "UL", "UB", "UR"], "U")
-        self._rotate_corners(["UFL", "UBL", "UBR", "UFR"], "U")
+        self._rotate_pieces(["UF", "UL", "UB", "UR"], "U")
+        self._rotate_pieces(["UFL", "UBL", "UBR", "UFR"], "U")
 
     def D(self):
         """Perform a D rotation (Down face clockwise)."""
-        self._rotate_edges(["DF", "DR", "DB", "DL"], "D")
-        self._rotate_corners(["DFL", "DFR", "DBR", "DBL"], "D")
+        self._rotate_pieces(["DF", "DR", "DB", "DL"], "D")
+        self._rotate_pieces(["DFL", "DFR", "DBR", "DBL"], "D")
 
     def F(self):
         """Perform an F rotation (Front face clockwise)."""
-        self._rotate_edges(["UF", "FR", "DF", "FL"], "F")
-        self._rotate_corners(["UFL", "UFR", "DFR", "DFL"], "F")
+        self._rotate_pieces(["UF", "FR", "DF", "FL"], "F")
+        self._rotate_pieces(["UFL", "UFR", "DFR", "DFL"], "F")
 
     def B(self):
         """Perform a B rotation (Back face clockwise)."""
-        self._rotate_edges(["UB", "BL", "DB", "BR"], "B")
-        self._rotate_corners(["UBL", "DBL", "DBR", "UBR"], "B")
+        self._rotate_pieces(["UB", "BL", "DB", "BR"], "B")
+        self._rotate_pieces(["UBL", "DBL", "DBR", "UBR"], "B")
 
     def R(self):
         """Perform an R rotation (Right face clockwise)."""
-        self._rotate_edges(["UR", "BR", "DR", "FR"], "R")
-        self._rotate_corners(["UFR", "UBR", "DBR", "DFR"], "R")
+        self._rotate_pieces(["UR", "BR", "DR", "FR"], "R")
+        self._rotate_pieces(["UFR", "UBR", "DBR", "DFR"], "R")
 
     def L(self):
         """Perform an L rotation (Left face clockwise)."""
-        self._rotate_edges(["UL", "FL", "DL", "BL"], "L")
-        self._rotate_corners(["UFL", "DFL", "DBL", "UBL"], "L")
+        self._rotate_pieces(["UL", "FL", "DL", "BL"], "L")
+        self._rotate_pieces(["UFL", "DFL", "DBL", "UBL"], "L")
 
     def U_prime(self):
         """Perform a U' rotation (Up face clockwise)."""

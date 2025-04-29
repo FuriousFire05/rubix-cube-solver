@@ -4,7 +4,7 @@
 # What to measure
 branch = True
 source = 
-    solver
+    core
     utils
 
 [report]
@@ -20,5 +20,5 @@ directory = coverage_html_report
 [paths]
 # Handle different local paths (for example if run on Windows and Linux)
 source =
-    solver
+    core
     utils

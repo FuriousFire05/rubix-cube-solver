@@ -33,10 +33,10 @@ class Piece:
         """Return the color-face map (colors assigned to each face)."""
         return self.colors
 
-    def set_faces(self, c: Dict[Color, Face]):
+    def set_faces(self, colors: Dict[Color, Face]):
         """Update the color-face map."""
         temp = self.colors.copy()
-        for color, face in zip(temp.keys(), c.values()):
+        for color, face in zip(temp.keys(), colors.values()):
             self.colors[color] = face
 
     def get_name(self) -> str:
