@@ -66,6 +66,9 @@ class RubiksCube:
                 self.matrix[x][y][z] = self.pieces[name] = piece_class(colors, name,  (x, y, z))
         # fmt: on
 
+        # Record Moves performed on this Cube
+        self.move_history = []
+
     # ------- Display Functions -------
     def display(self):
         """Display the cube in a 2D format."""
@@ -313,64 +316,131 @@ class RubiksCube:
         """Perform a U rotation (Up face clockwise)."""
         self._rotate_pieces(["UF", "UL", "UB", "UR"], "U")
         self._rotate_pieces(["UFL", "UBL", "UBR", "UFR"], "U")
+        self.move_history.append("U")
 
     def D(self):
         """Perform a D rotation (Down face clockwise)."""
         self._rotate_pieces(["DF", "DR", "DB", "DL"], "D")
         self._rotate_pieces(["DFL", "DFR", "DBR", "DBL"], "D")
+        self.move_history.append("D")
 
     def F(self):
         """Perform an F rotation (Front face clockwise)."""
         self._rotate_pieces(["UF", "FR", "DF", "FL"], "F")
         self._rotate_pieces(["UFL", "UFR", "DFR", "DFL"], "F")
+        self.move_history.append("F")
 
     def B(self):
         """Perform a B rotation (Back face clockwise)."""
         self._rotate_pieces(["UB", "BL", "DB", "BR"], "B")
         self._rotate_pieces(["UBL", "DBL", "DBR", "UBR"], "B")
+        self.move_history.append("B")
 
     def R(self):
         """Perform an R rotation (Right face clockwise)."""
         self._rotate_pieces(["UR", "BR", "DR", "FR"], "R")
         self._rotate_pieces(["UFR", "UBR", "DBR", "DFR"], "R")
+        self.move_history.append("R")
 
     def L(self):
         """Perform an L rotation (Left face clockwise)."""
         self._rotate_pieces(["UL", "FL", "DL", "BL"], "L")
         self._rotate_pieces(["UFL", "DFL", "DBL", "UBL"], "L")
+        self.move_history.append("L")
+
+    def U2(self):
+        """Perform a U2 rotation (Up face twice)."""
+        self.U()
+        self.U()
+        self.move_history.pop()
+        self.move_history[-1] = "U2"
+
+    def D2(self):
+        """Perform a D2 rotation (Down face twice)."""
+        self.D()
+        self.D()
+        self.move_history.pop()
+        self.move_history[-1] = "D2"
+
+    def F2(self):
+        """Perform an F2 rotation (Front face twice)."""
+        self.F()
+        self.F()
+        self.move_history.pop()
+        self.move_history[-1] = "F2"
+
+    def B2(self):
+        """Perform a B2 rotation (Back face twice)."""
+        self.B()
+        self.B()
+        self.move_history.pop()
+        self.move_history[-1] = "B2"
+
+    def R2(self):
+        """Perform an R2 rotation (Right face twice)."""
+        self.R()
+        self.R()
+        self.move_history.pop()
+        self.move_history[-1] = "R2"
+
+    def L2(self):
+        """Perform an L2 rotation (Left face twice)."""
+        self.L()
+        self.L()
+        self.move_history.pop()
+        self.move_history[-1] = "L2"
 
     def U_prime(self):
-        """Perform a U' rotation (Up face clockwise)."""
+        """Perform a U' rotation (Up face counter-clockwise)."""
         self.U()
         self.U()
         self.U()
+        self.move_history.pop()
+        self.move_history.pop()
+        self.move_history[-1] = "U'"
 
     def D_prime(self):
         """Perform a D' rotation (Down face counter-clockwise)."""
         self.D()
         self.D()
         self.D()
+        self.move_history.pop()
+        self.move_history.pop()
+        self.move_history[-1] = "D'"
 
     def F_prime(self):
         """Perform an F' rotation (Front face counter-clockwise)."""
         self.F()
         self.F()
         self.F()
+        self.move_history.pop()
+        self.move_history.pop()
+        self.move_history[-1] = "F'"
 
     def B_prime(self):
         """Perform a B' rotation (Back face counter-clockwise)."""
         self.B()
         self.B()
         self.B()
+        self.move_history.pop()
+        self.move_history.pop()
+        self.move_history[-1] = "B'"
 
     def R_prime(self):
         """Perform an R' rotation (Right face counter-clockwise)."""
         self.R()
         self.R()
         self.R()
+        self.move_history.pop()
+        self.move_history.pop()
+        self.move_history[-1] = "R'"
 
     def L_prime(self):
         """Perform an L' rotation (Left face counter-clockwise)."""
         self.L()
         self.L()
         self.L()
+        self.move_history.pop()
+        self.move_history.pop()
+        self.move_history[-1] = "L'"
+
