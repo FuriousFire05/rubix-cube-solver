@@ -42,7 +42,7 @@ class Scrambler:
             if modifier == "":
                 method = getattr(cube, face)  # e.g., U, D, F, B, R, L
             elif modifier == "'":
-                method = getattr(cube, f"{face}_Prime")  # e.g., U', D', F', B', R', L'
+                method = getattr(cube, f"{face}_prime")  # e.g., U', D', F', B', R', L'
             elif modifier == "2":
                 method = getattr(cube, f"{face}2")  # e.g., U2, D2, F2, B2, R2, L2
 
