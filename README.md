@@ -46,7 +46,7 @@ rubix-cube-solver/
 
 ## 🚀 How to Run
 
-# Prerequisites
+### Prerequisites
 
  - Make sure Python 3.11+ is installed
  - Install Pygame and dependencies
@@ -56,13 +56,13 @@ pip install pygame pytest
 ```
 (or activate your conda environment if you're using one.)
 
-# Run the Visualizer
+### Run the Visualizer
 
 ```bash
 python main.py
 ```
 
-# Run Unit Tests
+### Run Unit Tests
 
 ```bash
 pytest
