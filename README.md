@@ -5,6 +5,10 @@ This is a Rubik's Cube Solver project written in **Python**.
 The cube uses object-oriented principles to represent pieces, faces, and rotations.  
 The goal is to eventually solve a scrambled cube algorithmically!
 
+This project is being built from scratch, hence might have limited features
+I am trying my best to reduce the number of bugs
+
+🤗
 ---
 
 ## 📂 Project Structure
@@ -58,11 +62,19 @@ pytest
 
 ---
 
-## 🛠️ Todo
+## 😎 Features
 
-- Polish cube display
+- Object Oriented Design of a 3D Rubix cube
+- Visual Graphics for cube layout using Pygame
+- Interactive Buttons for Cube Rotation
+- Game Updates the cube layout after rotation button clicks in Real-Time
+
+## 🛠️ Upcoming Updates
+
+- Reset, Scramble Functions
+- Take cube layout as input
 - Implement solving algorithms
-- Add visualization (optional)
+- Optimized Solution to solve the cube
 
 ## ✨ Notes
 
