@@ -14,26 +14,26 @@ from utils.faces import Face
 def test_cube_initial_state():
     cube = RubiksCube()
 
-    U = cube._get_face(Face.U)
-    D = cube._get_face(Face.D)
-    F = cube._get_face(Face.F)
-    B = cube._get_face(Face.B)
-    R = cube._get_face(Face.R)
-    L = cube._get_face(Face.L)
+    U = cube.get_face(Face.U)
+    D = cube.get_face(Face.D)
+    F = cube.get_face(Face.F)
+    B = cube.get_face(Face.B)
+    R = cube.get_face(Face.R)
+    L = cube.get_face(Face.L)
 
-    assert U[1][1] == "Y", f"Expected Yellow at U center, got {U[1][1]}"
-    assert D[1][1] == "W", f"Expected White at D center, got {D[1][1]}"
-    assert F[1][1] == "B", f"Expected Blue at F center, got {F[1][1]}"
-    assert B[1][1] == "G", f"Expected Green at B center, got {B[1][1]}"
-    assert R[1][1] == "R", f"Expected Red at R center, got {R[1][1]}"
-    assert L[1][1] == "O", f"Expected Orange at L center, got {L[1][1]}"
+    assert U[1][1] == "YELLOW", f"Expected Yellow at U center, got {U[1][1]}"
+    assert D[1][1] == "WHITE", f"Expected White at D center, got {D[1][1]}"
+    assert F[1][1] == "BLUE", f"Expected Blue at F center, got {F[1][1]}"
+    assert B[1][1] == "GREEN", f"Expected Green at B center, got {B[1][1]}"
+    assert R[1][1] == "RED", f"Expected Red at R center, got {R[1][1]}"
+    assert L[1][1] == "ORANGE", f"Expected Orange at L center, got {L[1][1]}"
 
 
 def test_get_face_invalid_face():
     cube = RubiksCube()
 
     with pytest.raises(KeyError):
-        cube._get_face(
+        cube.get_face(
             "InvalidFace"
         )  # because _get_face expects a Face Enum, not string
 
