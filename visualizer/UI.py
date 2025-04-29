@@ -93,10 +93,22 @@ buttons_row_2 = [
         (255, 255, 255),
         move,
     )
+    for i, move in enumerate(["U2", "L2", "F2", "R2", "B2", "D2"])
+]
+
+buttons_row_3 = [
+    Button(
+        50 + (button_width + button_spacing) * i,
+        button_area_height + 250,
+        button_width,
+        button_height,
+        (255, 255, 255),
+        move,
+    )
     for i, move in enumerate(["U'", "L'", "F'", "R'", "B'", "D'"])
 ]
 
-buttons = buttons_row_1 + buttons_row_2
+buttons = buttons_row_1 + buttons_row_2 + buttons_row_3
 
 
 # Main display function (UI logic)
@@ -129,6 +141,12 @@ def display_cube(cube: RubiksCube):
                             "R": cube.R,
                             "B": cube.B,
                             "D": cube.D,
+                            "U2": cube.U2,
+                            "L2": cube.L2,
+                            "F2": cube.F2,
+                            "R2": cube.R2,
+                            "B2": cube.B2,
+                            "D2": cube.D2,
                             "U'": cube.U_prime,
                             "L'": cube.L_prime,
                             "F'": cube.F_prime,
