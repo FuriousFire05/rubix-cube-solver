@@ -55,6 +55,7 @@ class Corner {
 class RubiksCube {
   #pieces: dict
   #matrix: list
+  #move_history: list
 
   +__init__()
   +display()
@@ -99,7 +100,17 @@ class Button {
   +__init__(x, y, width, height, color, text, font_size)
   +draw(screen)
   +is_clicked(mouse_pos)
-} 
+}
+
+' Define Scrambler Class
+class Scrambler {
+  #MOVES: list
+  #history: list
+
+  +__init__()
+  +generate_scramble(length: int)
+  +apply_scramble(cube: RubiksCube, scramble: list)
+}
 
 ' Define relationships between classes
 Piece <|-- Center

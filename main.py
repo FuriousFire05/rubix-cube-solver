@@ -12,6 +12,6 @@ if __name__ == "__main__":
 
     scramble = scrambler.generate_scramble()
     scrambler.apply_scramble(cube, scramble)
+
     print("All moves made on cube so far:", cube.move_history)
     display_cube(cube)
-

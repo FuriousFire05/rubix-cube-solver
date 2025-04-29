@@ -1,6 +1,8 @@
 import random
 
+
 class Scrambler:
+    # fmt: off
     MOVES = [
         'U', "U'", 'U2',
         'D', "D'", 'D2',
@@ -9,6 +11,7 @@ class Scrambler:
         'R', "R'", 'R2',
         'L', "L'", 'L2'
     ]
+    # fmt: on
 
     def __init__(self):
         self.history = []
@@ -19,29 +22,28 @@ class Scrambler:
         Avoids repeating the same face consecutively.
         """
         scramble = []
-        last_face = ''
-        
+        last_face = ""
+
         for _ in range(length):
             move = random.choice(self.MOVES)
             while move[0] == last_face:
                 move = random.choice(self.MOVES)
             scramble.append(move)
             last_face = move[0]
-        
+
         self.history.append(scramble)
         return scramble
 
     def apply_scramble(self, cube, scramble):
         for move in scramble:
             face = move[0]
-            modifier = move[1:] if len(move) > 1 else ''
+            modifier = move[1:] if len(move) > 1 else ""
 
-            method = None
-            if modifier == '':
-                method = getattr(cube, face)
+            if modifier == "":
+                method = getattr(cube, face)  # e.g., U, D, F, B, R, L
             elif modifier == "'":
-                method = getattr(cube, f'{face}_prime')
-            elif modifier == '2':
-                method = lambda: [getattr(cube, face)(), getattr(cube, face)()]
+                method = getattr(cube, f"{face}_Prime")  # e.g., U', D', F', B', R', L'
+            elif modifier == "2":
+                method = getattr(cube, f"{face}2")  # e.g., U2, D2, F2, B2, R2, L2
 
-            method()
+            method()  # Apply the selected move

@@ -19,7 +19,8 @@ rubix-cube-solver/
 ├── core/
 │   ├── __init__.py
 │   ├── cube.py
-│   └── pieces.py
+│   ├── pieces.py
+│   └── scramble.py
 ├── tests/
 │   ├── test_cube.py
 │   ├── test_pieces.py

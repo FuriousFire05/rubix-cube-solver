@@ -443,4 +443,3 @@ class RubiksCube:
         self.move_history.pop()
         self.move_history.pop()
         self.move_history[-1] = "L'"
-
