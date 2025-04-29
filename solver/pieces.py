@@ -42,7 +42,7 @@ class Piece:
     def get_name(self) -> str:
         """Return the name of the piece."""
         return self.name
-    
+
     def set_name(self, name: str):
         """Update the name of the piece."""
         self.name = name

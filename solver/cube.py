@@ -158,8 +158,6 @@ class RubiksCube:
                     piece = self.matrix[x][y][z]
                     face_grid[2 - y][z] = self._get_color(piece, face)
         return face_grid
-    
-    
 
     # -------- Helper Functions --------
     def _get_color(self, piece, face):
@@ -170,7 +168,7 @@ class RubiksCube:
             if piece_face == face:
                 return color.name  # Return the color name
         return "BLACK"  # Return a blank space if no matching face is found
-    
+
     def _rebuild_matrix(self):
         """Rebuild the matrix from the pieces."""
         for piece in self.pieces.values():
@@ -181,7 +179,7 @@ class RubiksCube:
         values = [self.pieces[key] for key in keys]
 
         values.insert(0, values.pop())
-        
+
         for key, value in zip(keys, values):
             self.pieces[key] = value
 
@@ -219,7 +217,7 @@ class RubiksCube:
             raise ValueError(
                 "Invalid face, must be one of 'U', 'D', 'F', 'B', 'R', 'L'."
             )
-        
+
         # Rotate positions
         names.append(names.pop(0))  # Rotate names clockwise
         positions.append(positions.pop(0))  # Rotate positions clockwise
@@ -309,7 +307,6 @@ class RubiksCube:
         self._apply_components(edges, rotated_components)
         self._rearrange_pieces(edges)
         self._rebuild_matrix()
-        
 
     def _rotate_corners(self, corners: list[str], face: str):
         """Rotate the corner 3x3 grid clockwise."""
@@ -321,7 +318,6 @@ class RubiksCube:
         self._apply_components(corners, rotated_components)
         self._rearrange_pieces(corners)
         self._rebuild_matrix()
-        
 
     # -------- Rotation Functions --------
     def U(self):
@@ -353,13 +349,13 @@ class RubiksCube:
         """Perform an L rotation (Left face clockwise)."""
         self._rotate_edges(["UL", "FL", "DL", "BL"], "L")
         self._rotate_corners(["UFL", "DFL", "DBL", "UBL"], "L")
-    
+
     def U_prime(self):
         """Perform a U' rotation (Up face clockwise)."""
         self.U()
         self.U()
         self.U()
-    
+
     def D_prime(self):
         """Perform a D' rotation (Down face counter-clockwise)."""
         self.D()

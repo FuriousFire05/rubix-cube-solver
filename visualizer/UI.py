@@ -3,7 +3,6 @@
 import pygame
 from solver.cube import RubiksCube
 from utils.faces import Face
-from utils.colors import Color
 from visualizer.button import Button
 
 # Initialize pygame
@@ -34,6 +33,7 @@ FACE_POSITIONS = {
 
 FACE_SIZE = 150
 
+
 # Function to draw a 3x3 face with different colors
 def draw_face(x, y, colors):
     """Draw a 3x3 face of the Rubik's Cube."""
@@ -63,6 +63,7 @@ def draw_face(x, y, colors):
                 1,
             )
 
+
 # Define button sizes and positions
 button_width = 100
 button_height = 50
@@ -71,17 +72,32 @@ button_area_height = HEIGHT // 2  # Buttons will occupy the bottom half of the s
 
 # First row: Clockwise functions
 buttons_row_1 = [
-    Button(50 + (button_width + button_spacing) * i, button_area_height + 50, button_width, button_height, (255, 255, 255), move)
+    Button(
+        50 + (button_width + button_spacing) * i,
+        button_area_height + 50,
+        button_width,
+        button_height,
+        (255, 255, 255),
+        move,
+    )
     for i, move in enumerate(["U", "L", "F", "R", "B", "D"])
 ]
 
 # Second row: Counter-clockwise (prime) functions
 buttons_row_2 = [
-    Button(50 + (button_width + button_spacing) * i, button_area_height + 150, button_width, button_height, (255, 255, 255), move)
+    Button(
+        50 + (button_width + button_spacing) * i,
+        button_area_height + 150,
+        button_width,
+        button_height,
+        (255, 255, 255),
+        move,
+    )
     for i, move in enumerate(["U'", "L'", "F'", "R'", "B'", "D'"])
 ]
 
 buttons = buttons_row_1 + buttons_row_2
+
 
 # Main display function (UI logic)
 def display_cube(cube: RubiksCube):
