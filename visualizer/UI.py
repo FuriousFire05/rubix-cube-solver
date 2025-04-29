@@ -1,7 +1,7 @@
 # visualizer/visualizer.py
 
 import pygame
-from solver.cube import RubiksCube
+from core.cube import RubiksCube
 from utils.faces import Face
 from visualizer.button import Button
 

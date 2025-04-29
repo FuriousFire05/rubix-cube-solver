@@ -7,7 +7,7 @@ import pytest
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from solver.cube import RubiksCube
+from core.cube import RubiksCube
 from utils.faces import Face
 
 

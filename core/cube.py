@@ -1,6 +1,6 @@
-# solver/cube.py
+# core/cube.py
 
-from solver.pieces import Center, Edge, Corner
+from core.pieces import Center, Edge, Corner
 from utils.faces import Face
 from utils.colors import Color
 

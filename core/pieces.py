@@ -1,4 +1,4 @@
-# solver/pieces.py
+# core/pieces.py
 
 from utils.colors import Color
 from utils.faces import Face

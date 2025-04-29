@@ -5,7 +5,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from solver.pieces import Piece, Center, Edge, Corner
+from core.pieces import Piece, Center, Edge, Corner
 from utils.colors import Color
 from utils.faces import Face
 
