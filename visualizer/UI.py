@@ -1,4 +1,4 @@
-# visualizer/visualizer.py
+# visualizer/UI.py
 
 import pygame
 from utils.faces import Face
@@ -42,6 +42,7 @@ FACE_POSITIONS = {
 
 FACE_SIZE = 150
 
+
 # Function to draw a 3x3 face with different colors
 def draw_face(x, y, colors):
     """Draw a 3x3 face of the Rubik's Cube."""
@@ -71,20 +72,22 @@ def draw_face(x, y, colors):
                 1,
             )
 
+
 def draw_move_history(screen, history, font, rect, offset):
-    pygame.draw.rect(screen, (30, 30, 30), rect) # dark background
-    pygame.draw.rect(screen, (255, 255, 255), rect, 2) # White border
+    pygame.draw.rect(screen, (30, 30, 30), rect)  # dark background
+    pygame.draw.rect(screen, (255, 255, 255), rect, 2)  # White border
 
     padding = 10
     y_offset = rect.top + padding + offset
     line_height = font.get_height() + 5
-    
-    for i, move in enumerate(history[-len(history):]):
+
+    for i, move in enumerate(history[-len(history) :]):
         move_text = font.render(f"{i+1}. {move}", True, (255, 255, 255))
-        text_rect = move_text.get_rect(topleft = (rect.left + padding, y_offset))
+        text_rect = move_text.get_rect(topleft=(rect.left + padding, y_offset))
         if rect.top <= text_rect.top <= rect.bottom:
             screen.blit(move_text, text_rect)
         y_offset += line_height
+
 
 # Define button sizes and positions
 button_width = 100
@@ -98,18 +101,23 @@ scramble_button = RotatingColorButton(
     button_area_height + 50,
     button_width,
     button_height,
-    colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)],
-    text = "SCRAMBLE",
-    rotation_speed = 1000
+    colors=[RED, ORANGE, BLUE, YELLOW],
+    text="SCRAMBLE",
+    rotation_speed=100,
+)
+
+# Define Reset Button
+reset_button = RotatingColorButton(
+    200 + (button_width + button_spacing) * 10,
+    button_area_height + 50,
+    button_width,
+    button_height,
+    colors=[(0, 255, 0)],  # Green color for the reset button
+    text="RESET",
 )
 
 clear_button = Button(
-    history_rect.x,
-    history_rect.bottom,
-    history_rect.width,
-    30,
-    (200, 0, 0),
-    "CLEAR"
+    history_rect.x, history_rect.bottom, history_rect.width, 30, (200, 0, 0), "CLEAR"
 )
 
 # First row: Clockwise functions
@@ -154,6 +162,8 @@ buttons_row_3 = [
 buttons = buttons_row_1 + buttons_row_2 + buttons_row_3
 buttons.append(clear_button)
 buttons.append(scramble_button)
+buttons.append(reset_button)
+
 
 # Main display function (UI logic)
 def display_cube(cube: RubiksCube, scrambler: Scrambler):
@@ -162,7 +172,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
     running = True
     font = pygame.font.SysFont(None, 24)
     scroll_offset = 0
-    SCROLL_STEP = 20 # pixels to scroll per wheel event
+    SCROLL_STEP = 20  # pixels to scroll per wheel event
 
     while running:
         screen.fill((100, 100, 100))  # grey background
@@ -190,7 +200,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                 # Scroll wheel down
                 elif event.button == 5:
                     scroll_offset -= SCROLL_STEP
-                
+
                 # Clamp scrolling to limits
                 scroll_offset = min(scroll_offset, 0)
 
@@ -202,6 +212,8 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                         elif button.text == "SCRAMBLE":
                             scramble = scrambler.generate_scramble()
                             scrambler.apply_scramble(cube, scramble)
+                        elif button.text == "RESET":
+                            cube = RubiksCube()
                         else:
                             move = button.text
                             rotation_method = {

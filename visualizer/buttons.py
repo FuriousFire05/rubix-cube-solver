@@ -19,6 +19,7 @@ class Button:
     def is_clicked(self, mouse_pos):
         return self.rect.collidepoint(mouse_pos)
 
+
 class RotatingColorButton:
     def __init__(self, x, y, width, height, colors, text, rotation_speed=500):
         self.rect = pygame.Rect(x, y, width, height)

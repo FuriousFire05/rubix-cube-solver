@@ -10,4 +10,4 @@ if __name__ == "__main__":
     scrambler = Scrambler()
     cube = RubiksCube()
 
-    display_cube(cube, scrambler)
+    cube = display_cube(cube, scrambler)
