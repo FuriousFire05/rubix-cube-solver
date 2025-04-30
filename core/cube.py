@@ -310,7 +310,32 @@ class RubiksCube:
         self._apply_components(pieces, rotated_components)
         self._rearrange_pieces(pieces)
         self._rebuild_matrix()
+    # ----------- For Solving ------------
 
+    def is_solved(self):
+        """Check if the cube is in a solved state."""
+        for face in Face:
+            face_colors = self.get_face(face)
+            center_color = face_colors[1][1]  # Center piece color
+            for row in face_colors:
+                for color in row:
+                    if color != center_color:
+                        return False
+        return True
+
+    def get_piece_at_position(self, x, y, z):
+        """Get the piece at a specific position in the matrix."""
+        self._rebuild_matrix()
+        return self.matrix[x][y][z]
+
+    def find_piece_by_colors(self, *colors):
+        """Find a piece that has all the specified colors."""
+        for piece in self.pieces.values():
+            piece_colors = set(piece.get_faces().keys())
+            if set(colors).issubset(piece_colors):
+                return piece
+        return None
+    
     # -------- Rotation Functions --------
     def U(self):
         """Perform a U rotation (Up face clockwise)."""
