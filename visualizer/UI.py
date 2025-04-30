@@ -73,6 +73,7 @@ def draw_face(x, y, colors):
             )
 
 
+# Displays Moves as they are used
 def draw_move_history(screen, history, font, rect, offset):
     pygame.draw.rect(screen, (30, 30, 30), rect)  # dark background
     pygame.draw.rect(screen, (255, 255, 255), rect, 2)  # White border
@@ -87,6 +88,18 @@ def draw_move_history(screen, history, font, rect, offset):
         if rect.top <= text_rect.top <= rect.bottom:
             screen.blit(move_text, text_rect)
         y_offset += line_height
+
+
+# Brief Flash for Resetting State
+def flash_screen(duration=150):
+    """Brief white flash to indicate reset."""
+    overlay = pygame.Surface((WIDTH, HEIGHT))
+    overlay.set_alpha(180)  # Transparency level
+    overlay.fill((255, 255, 255))  # White flash
+
+    screen.blit(overlay, (0, 0))
+    pygame.display.update()
+    pygame.time.delay(duration)  # milliseconds
 
 
 # Define button sizes and positions
@@ -213,6 +226,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             scramble = scrambler.generate_scramble()
                             scrambler.apply_scramble(cube, scramble)
                         elif button.text == "RESET":
+                            flash_screen()
                             cube = RubiksCube()
                         else:
                             move = button.text
