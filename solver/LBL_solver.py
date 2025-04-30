@@ -1,13 +1,11 @@
 # solver/LBL_solver.py
 
-from core.cube import RubiksCube
 
 class LBL_Solver:
     def __init__(self, cube):
         self.cube = cube
         self.moves = []  # Track the moves performed during solving
 
-    
     def _apply_move(self, move):
         """
         Calls the appropriate move function on the cube and stores the move.
@@ -51,14 +49,13 @@ class LBL_Solver:
 
         # Example: Rotate the front face until white is on U face, then F2 to bring it down.
         for _ in range(4):  # do this for 4 sides: F, R, B, L
-            top_color = self.cube.get_face('F')[0][1]  # top edge of F face
-            if top_color == 'W':  # if it's white
-                self.perform_move('F2')
+            top_color = self.cube.get_face("F")[0][1]  # top edge of F face
+            if top_color == "W":  # if it's white
+                self.perform_move("F2")
             else:
-                self.perform_move('U')
-        
-        # TODO: Add real logic to detect and position all white edges from all locations
+                self.perform_move("U")
 
+        # TODO: Add real logic to detect and position all white edges from all locations
 
     def solve_white_corners(self):
         # TODO: Implement white corners
@@ -83,4 +80,3 @@ class LBL_Solver:
     def orient_yellow_corners(self):
         # TODO: Rotate yellow corners to finish
         pass
-    

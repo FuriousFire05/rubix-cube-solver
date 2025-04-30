@@ -310,6 +310,7 @@ class RubiksCube:
         self._apply_components(pieces, rotated_components)
         self._rearrange_pieces(pieces)
         self._rebuild_matrix()
+
     # ----------- For Solving ------------
 
     def is_solved(self):
@@ -335,7 +336,7 @@ class RubiksCube:
             if set(colors).issubset(piece_colors):
                 return piece
         return None
-    
+
     # -------- Rotation Functions --------
     def U(self):
         """Perform a U rotation (Up face clockwise)."""

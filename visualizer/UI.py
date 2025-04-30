@@ -25,7 +25,12 @@ pygame.display.set_caption("Rubik's Cube Display")
 history_rect = pygame.Rect(WIDTH - 250, 50, 200, HEIGHT - 100)
 
 # Place for Displaying Solution
-solution_rect = pygame.Rect(history_rect.x - history_rect.width - 20, history_rect.y, history_rect.width, history_rect.height)
+solution_rect = pygame.Rect(
+    history_rect.x - history_rect.width - 20,
+    history_rect.y,
+    history_rect.width,
+    history_rect.height,
+)
 
 # Define colors
 WHITE = (255, 255, 255)
@@ -46,6 +51,7 @@ FACE_POSITIONS = {
 }
 
 FACE_SIZE = 150
+
 
 # Displays Solution Steps (just like move history)
 def draw_solution(screen, solution_moves, font, rect, offset):
@@ -136,7 +142,7 @@ solve_button = Button(
     button_width,
     button_height,
     (0, 255, 0),  # Green button
-    "SOLVE"
+    "SOLVE",
 )
 
 
