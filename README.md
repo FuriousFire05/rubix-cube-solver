@@ -84,13 +84,14 @@ pytest
 
 - Fully interactive 2D Layout of a 3D Rubik's Cube
 - Real-time visual rotation with button clicks
+- Reset and Scramble buttons
+- Move History Display
 - Intuitive UI using Pygame
 - Color-accurate representation of all six faces
 - Clean and scalable object-oriented codebase
 
 ## 🛠️ Upcoming Features
 
-- Reset and Scramble buttons
 - Ability to input custom cube states
 - Solving algorithms (beginner -> advanced)
 - Optimized move generation
