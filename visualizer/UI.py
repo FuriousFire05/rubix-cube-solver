@@ -104,7 +104,12 @@ scramble_button = RotatingColorButton(
 )
 
 clear_button = Button(
-    WIDTH - 200, HEIGHT - 80, 150, 40, (200, 0, 0), "Clear"
+    history_rect.x,
+    history_rect.bottom,
+    history_rect.width,
+    30,
+    (200, 0, 0),
+    "CLEAR"
 )
 
 # First row: Clockwise functions
@@ -147,15 +152,18 @@ buttons_row_3 = [
 ]
 
 buttons = buttons_row_1 + buttons_row_2 + buttons_row_3
-
+buttons.append(clear_button)
+buttons.append(scramble_button)
 
 # Main display function (UI logic)
 def display_cube(cube: RubiksCube, scrambler: Scrambler):
     """Display the Rubik's Cube using Pygame."""
+
     running = True
     font = pygame.font.SysFont(None, 24)
     scroll_offset = 0
     SCROLL_STEP = 20 # pixels to scroll per wheel event
+
     while running:
         screen.fill((100, 100, 100))  # grey background
 
@@ -169,8 +177,6 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
         # Draw buttons
         for button in buttons:
             button.draw(screen)
-
-        scramble_button.draw(screen)
 
         # Event handling
         for event in pygame.event.get():
@@ -190,9 +196,12 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
 
                 for button in buttons:
                     if button.is_clicked(event.pos):
-                        if button.text == "Clear":
+                        if button.text == "CLEAR":
                             cube.move_history.clear()
                             scroll_offset = 0
+                        elif button.text == "SCRAMBLE":
+                            scramble = scrambler.generate_scramble()
+                            scrambler.apply_scramble(cube, scramble)
                         else:
                             move = button.text
                             rotation_method = {
@@ -217,9 +226,6 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             }
                             if move in rotation_method:
                                 rotation_method[move]()
-                if scramble_button.is_clicked(event.pos):
-                    scramble = scrambler.generate_scramble()
-                    scrambler.apply_scramble(cube, scramble)
 
         # Update the display after each move
         pygame.display.update()
