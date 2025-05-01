@@ -9,6 +9,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from core.cube import RubiksCube
 from utils.faces import Face
+from utils.colors import Color
 
 
 def test_cube_initial_state():
@@ -61,7 +62,34 @@ def test_double_rotations():
     cube.U2()
     cube.U2()
     assert str(cube.get_face(Face.U)) == original
-    
+
+def test_triple_rotations_is_inverse():
+    cube = RubiksCube()
+    original = str(cube.get_face(Face.L))
+    cube.L()
+    cube.L()
+    cube.L()
+    assert str(cube.get_face(Face.L)) == str(cube.get_face(Face.L_prime()))
+
+def test_move_history_tracking():
+    cube = RubiksCube()
+    cube.F()
+    cube.R()
+    cube.U2()
+    assert cube.move_history == ["F", "R", "U2"]
+
+def test_get_piece_at_position():
+    cube = RubiksCube()
+    piece = cube.get_piece_at_position(1, 2, 1)
+    assert piece.get_name() == "U"
+
+def test_find_piece_by_colors():
+    cube = RubiksCube()
+    piece = cube.find_piece_by_colors(Color.YELLOW, Color.BLUE, Color.RED)
+    assert piece is not None
+    assert set(piece.get_faces().keys()) == {Color.YELLOW, Color.BLUE, Color.RED}
+
+
 def test_centers_created():
     cube = RubiksCube()
 
