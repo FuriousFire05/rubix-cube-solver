@@ -25,3 +25,21 @@ def test_face_enum():
     assert Face.B.name == "B"
     assert Face.R.name == "R"
     assert Face.L.name == "L"
+
+    # Test face color associations
+    assert Face.U.value == Color.YELLOW
+    assert Face.D.value == Color.WHITE
+    assert Face.F.value == Color.BLUE
+    assert Face.B.value == Color.GREEN
+    assert Face.R.value == Color.RED
+    assert Face.L.value == Color.ORANGE
+
+
+def test_color_string_representations():
+    assert str(Color.YELLOW) == "Yellow"
+    assert repr(Color.YELLOW) == "Color.YELLOW"
+
+
+def test_face_string_representations():
+    assert str(Face.U) == "U"
+    assert repr(Face.U) == "Face.U"

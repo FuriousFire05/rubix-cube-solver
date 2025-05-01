@@ -11,6 +11,9 @@ source =
 # Format the report nicely
 show_missing = True
 skip_covered = True
+exclude_lines =
+    pragma: no cover
+    if __name__ == .__main__.:
 precision = 2
 
 [html]
