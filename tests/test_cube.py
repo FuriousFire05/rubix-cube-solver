@@ -32,15 +32,36 @@ def test_initial_state_is_solved():
     cube = RubiksCube()
     assert cube.is_solved() is True
 
-def test_get_face_invalid_face():
+def test_get_face_returns_correct_center():
     cube = RubiksCube()
+    for face in Face:
+        face_grid = cube.get_face(face)
+        center_color = face_grid[1][1]
+        for row in face_grid:
+            for color in row:
+                assert color == center_color
 
+def test_invalid_face_raises_key_error():
+    cube = RubiksCube()
     with pytest.raises(KeyError):
-        cube.get_face(
-            "InvalidFace"
-        )  # because _get_face expects a Face Enum, not string
+        cube.get_face("INVALID")
 
+def test_rotation_and_inverse_restores_state():
+    cube = RubiksCube()
+    original_state = str(cube.get_face(Face.F))
+    cube.F()
+    cube.F_prime()
+    restored_state = str(cube.get_face(Face.F))
+    assert restored_state == original_state
+    assert cube.is_solved()
 
+def test_double_rotations():
+    cube = RubiksCube()
+    original = str(cube.get_face(Face.U))
+    cube.U2()
+    cube.U2()
+    assert str(cube.get_face(Face.U)) == original
+    
 def test_centers_created():
     cube = RubiksCube()
 
