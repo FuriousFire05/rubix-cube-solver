@@ -64,12 +64,14 @@ def test_double_rotations():
     assert str(cube.get_face(Face.U)) == original
 
 def test_triple_rotations_is_inverse():
-    cube = RubiksCube()
-    original = str(cube.get_face(Face.L))
-    cube.L()
-    cube.L()
-    cube.L()
-    assert str(cube.get_face(Face.L)) == str(cube.get_face(Face.L_prime()))
+    cube1 = RubiksCube()
+    cube2 = RubiksCube()
+    cube1.L()
+    cube1.L()
+    cube1.L()
+    cube2.L_prime()
+    for face in Face:
+        assert cube1.get_face(face) == cube2.get_face(face)
 
 def test_move_history_tracking():
     cube = RubiksCube()
@@ -89,6 +91,32 @@ def test_find_piece_by_colors():
     assert piece is not None
     assert set(piece.get_faces().keys()) == {Color.YELLOW, Color.BLUE, Color.RED}
 
+def test_invalid_piece_in_fetch_components():
+    cube = RubiksCube()
+    with pytest.raises(ValueError):
+        cube._fetch_components(["XXX"])
+
+def test_rotate_components_invalid_face():
+    cube = RubiksCube()
+    comps = cube._fetch_components(["UF", "UR", "UB", "UL"])
+    with pytest.raises(ValueError):
+        cube._rotate_components(comps, "Z")
+
+def test_print_matrix_runs():
+    cube = RubiksCube()
+    cube.print_matrix()  # Should not crash
+
+
+def test_display_runs():
+    cube = RubiksCube()
+    cube.display()  # Should not crash
+
+def test_apply_and_fetch_components_consistency():
+    cube = RubiksCube()
+    keys = ["DF", "DL", "DB", "DR"]
+    comps = cube._fetch_components(keys)
+    cube._apply_components(keys, comps)  # Should not raise
+    assert cube._fetch_components(keys) == comps
 
 def test_centers_created():
     cube = RubiksCube()
