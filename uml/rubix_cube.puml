@@ -1,139 +1,156 @@
 @startuml rubix_cube
 
-' Define Color Enum
-enum Color {
-  +YELLOW
-  +WHITE
-  +BLUE
-  +GREEN
-  +RED
-  +ORANGE
-  +__str__()
-  +__repr__()
+skinparam class {
+    BackgroundColor White
+    BorderColor Black
+    ArrowColor #2F495F
+    Shadowing false
 }
 
-' Define Face Enum
-enum Face {
-  +U
-  +D
-  +F
-  +B
-  +R
-  +L
-  +__str__()
-  +__repr__()
+title Rubik's Cube Class Diagram
+
+' Enums with exact values from colors.py and faces.py
+enum Color <<enumeration>> {
+    YELLOW = "#FFFF00"
+    WHITE = "#FFFFFF"
+    BLUE = "#0000FF"
+    GREEN = "#00FF00"
+    RED = "#FF0000"
+    ORANGE = "#FFA500"
+    __str__()
+    __repr__()
 }
 
-' Define Piece Class
-class Piece {
-  #colors: Dict[Color, Face]
-  #position: Tuple[int, int, int]
-  #name: str
-
-  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
-  +__repr__(): str
-  +get_position(): Tuple[int, int, int]
-  +set_position(position: Tuple[int, int, int])
-  +get_faces(): Dict[Color, Face]
-  +set_faces(colors: Dict[Color, Face])
-  +get_name(): str
-  +set_name(name: str)
+enum Face <<enumeration>> {
+    U = Color.YELLOW
+    D = Color.WHITE
+    F = Color.BLUE
+    B = Color.GREEN
+    R = Color.RED
+    L = Color.ORANGE
+    __str__()
+    __repr__()
 }
 
-' Define Center Class (inherits from Piece)
+' Abstract Piece class with all methods from pieces.py
+abstract class Piece {
+    {field} - colors : Map<Color, Face>
+    {field} - position : Tuple<Integer, Integer, Integer>
+    {field} - name : String
+    
+    {method} + __init__(colors : Map<Color, Face>, name : String, position : Tuple<Integer, Integer, Integer>)
+    {method} + get_position() : Tuple<Integer, Integer, Integer>
+    {method} + set_position(position : Tuple<Integer, Integer, Integer>)
+    {method} + get_faces() : Map<Color, Face>
+    {method} + set_faces(colors : Map<Color, Face>)
+    {method} + get_name() : String
+    {method} + set_name(name : String)
+    {method} + __repr__() : String
+}
+
+' Concrete Piece implementations with validation
 class Center {
-  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
-  +Validates exactly 1 color/face
+    {method} + __init__(colors, name, position)
+    __validation__: colors.size() == 1
 }
 
-' Define Edge Class (inherits from Piece)
 class Edge {
-  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
-  +Validates exactly 2 colors/faces
+    {method} + __init__(colors, name, position)
+    __validation__: colors.size() == 2
 }
 
-' Define Corner Class (inherits from Piece)
 class Corner {
-  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
-  +Validates exactly 3 colors/faces
+    {method} + __init__(colors, name, position)
+    __validation__: colors.size() == 3
 }
 
-' Define Cube Class
+' Main Cube class with exact methods from cube.py
 class RubiksCube {
-  #pieces: Dict[str, Piece]
-  #matrix: List[List[List[Optional[Piece]]]
-  #move_history: List[str]
+    {field} - pieces : Map<String, Piece>
+    {field} - matrix : List<List<List<Piece>>>
+    {field} - move_history : List<String>
+    
+    {method} + __init__()
+    {method} + display()
+    {method} + print_matrix()
+    {method} + get_face(face : Face) : List<List<String>>
+    {method} + is_solved() : Boolean
+    {method} + get_piece_at_position(x : Integer, y : Integer, z : Integer) : Piece
+    {method} + find_piece_by_colors(colors : Color...) : Piece
+    
+    ' Rotation methods grouped by type
+        
+    {method} + U()
+    {method} + D()
+    {method} + F()
+    {method} + B()
+    {method} + R()
+    {method} + L()
+    
+    {method} + U2()
+    {method} + D2()
+    {method} + F2()
+    {method} + B2()
+    {method} + R2()
+    {method} + L2()
+    
+    {method} + U_prime()
+    {method} + D_prime()
+    {method} + F_prime()
+    {method} + B_prime()
+    {method} + R_prime()
+    {method} + L_prime()
+    
+    ' Internal methods from cube.py
 
-  +__init__()
-  +display()
-  +print_matrix()
-  +get_face(face: Face): List[List[str]]
-  +is_solved(): bool
-  +get_piece_at_position(x: int, y: int, z: int): Optional[Piece]
-  +find_piece_by_colors(*colors: Color): Optional[Piece]
-  
-  ' Basic moves
-  +U()
-  +D()
-  +F()
-  +B()
-  +R()
-  +L()
-  
-  ' Double moves
-  +U2()
-  +D2()
-  +F2()
-  +B2()
-  +R2()
-  +L2()
-  
-  ' Prime moves
-  +U_prime()
-  +D_prime()
-  +F_prime()
-  +B_prime()
-  +R_prime()
-  +L_prime()
-
-  ' Protected methods
-  #_get_color(piece: Optional[Piece], face: Face): str
-  #_rebuild_matrix()
-  #_rearrange_pieces(keys: List[str])
-  #_fetch_components(pieces: List[str]): List[List]
-  #_apply_components(pieces: List[str], components: List[List])
-  #_rotate_components(components: List[List], f: str): List[List]
-  #_rotate_pieces(pieces: List[str], face: str)
+    {method} - _get_color(piece : Piece, face : Face) : String
+    {method} - _rebuild_matrix()
+    {method} - _rearrange_pieces(keys : List<String>)
+    {method} - _fetch_components(pieces : List<String>) : List<List>>
+    {method} - _apply_components(pieces : List<String>, components : List<List>>)
+    {method} - _rotate_components(components : List<List>>, f : String) : List<List>>
+    {method} - _rotate_pieces(pieces : List<String>, face : String)
 }
 
-' Define Scrambler Class
+' Scrambler class from scramble.py
 class Scrambler {
-  #MOVES: List[str]
-  #history: List[List[str]]
-
-  +__init__()
-  +generate_scramble(length: int = 20): List[str]
-  +apply_scramble(cube: RubiksCube, scramble: List[str])
+    {field} - MOVES : List<String> = ["U", "U'", "U2", ..., "L2"]
+    {field} - history : List<List<String>>
+    
+    {method} + generate_scramble(length : Integer = 20) : List<String>
+    {method} + apply_scramble(cube : RubiksCube, scramble : List<String>)
 }
 
-' Define relationships between classes
+' Inheritance relationships
 Piece <|-- Center
 Piece <|-- Edge
 Piece <|-- Corner
-RubiksCube o-- "*" Piece : contains
-RubiksCube --> Scrambler : uses
 
+' Composition/Usage relationships
+RubiksCube "1" *-- "26" Piece : contains
+RubiksCube ..> Scrambler : uses
+
+' Documentation notes
 note top of RubiksCube
-  Contains 26 pieces:
-  - 6 Centers
-  - 12 Edges
-  - 8 Corners
+  Physical 3x3x3 Cube Representation:
+  - 6 Centers (1 color each)
+  - 12 Edges (2 colors each)
+  - 8 Corners (3 colors each)
+  - Tracks complete move history
 end note
 
-note top of Scrambler
-  Generates valid scrambles:
+note right of Scrambler
+  Move Generation:
+  - 18 possible moves (6 faces × 3 variants)
   - No consecutive same-face moves
-  - Tracks history
+  - Complete scramble history
+end note
+
+note top of Piece
+  Abstract Base Class for:
+  - Centers (1 color)
+  - Edges (2 colors)
+  - Corners (3 colors)
 end note
 
 @enduml
