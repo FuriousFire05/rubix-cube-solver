@@ -1,5 +1,3 @@
-' uml/rubix_cube.puml
-
 @startuml rubix_cube
 
 ' Define Color Enum
@@ -10,6 +8,8 @@ enum Color {
   +GREEN
   +RED
   +ORANGE
+  +__str__()
+  +__repr__()
 }
 
 ' Define Face Enum
@@ -20,60 +20,75 @@ enum Face {
   +B
   +R
   +L
+  +__str__()
+  +__repr__()
 }
 
 ' Define Piece Class
 class Piece {
-  #colors: dict
-  #position: tuple
+  #colors: Dict[Color, Face]
+  #position: Tuple[int, int, int]
   #name: str
 
-  +__init__(colors: dict, name: str, position: tuple)
+  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
   +__repr__(): str
-  +get_position(): tuple
-  +set_position(position: tuple)
-  +get_faces(): dict
-  +set_faces(colors: dict) 
+  +get_position(): Tuple[int, int, int]
+  +set_position(position: Tuple[int, int, int])
+  +get_faces(): Dict[Color, Face]
+  +set_faces(colors: Dict[Color, Face])
+  +get_name(): str
+  +set_name(name: str)
 }
 
 ' Define Center Class (inherits from Piece)
 class Center {
-  +__init__(colors: dict, name: str, position: tuple)
+  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
+  +Validates exactly 1 color/face
 }
 
 ' Define Edge Class (inherits from Piece)
 class Edge {
-  +__init__(colors: dict, name: str, position: tuple)
+  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
+  +Validates exactly 2 colors/faces
 }
 
 ' Define Corner Class (inherits from Piece)
 class Corner {
-  +__init__(colors: dict, name: str, position: tuple)
+  +__init__(colors: Dict[Color, Face], name: str, position: Tuple[int, int, int])
+  +Validates exactly 3 colors/faces
 }
 
 ' Define Cube Class
 class RubiksCube {
-  #pieces: dict
-  #matrix: list
-  #move_history: list
+  #pieces: Dict[str, Piece]
+  #matrix: List[List[List[Optional[Piece]]]
+  #move_history: List[str]
 
   +__init__()
   +display()
-  +_matrix()
-  +get_face(face: Face)
+  +print_matrix()
+  +get_face(face: Face): List[List[str]]
+  +is_solved(): bool
+  +get_piece_at_position(x: int, y: int, z: int): Optional[Piece]
+  +find_piece_by_colors(*colors: Color): Optional[Piece]
   
+  ' Basic moves
   +U()
   +D()
   +F()
   +B()
   +R()
   +L()
+  
+  ' Double moves
   +U2()
   +D2()
   +F2()
   +B2()
   +R2()
   +L2()
+  
+  ' Prime moves
   +U_prime()
   +D_prime()
   +F_prime()
@@ -81,41 +96,44 @@ class RubiksCube {
   +R_prime()
   +L_prime()
 
-  #_get_color(piece, face)
+  ' Protected methods
+  #_get_color(piece: Optional[Piece], face: Face): str
   #_rebuild_matrix()
-  #_rearrange_pieces(keys: list)
-  #_fetch_components(pieces: list)
-  #_apply_components(pieces: list, components: list)
-  #_rotate_components(components: list, f: str)
-  #_rotate_pieces(pieces: list, face: str)
-}
-
-' Define Button Class
-class Button {
-  #rect
-  #color
-  #text
-  #font
-
-  +__init__(x, y, width, height, color, text, font_size)
-  +draw(screen)
-  +is_clicked(mouse_pos)
+  #_rearrange_pieces(keys: List[str])
+  #_fetch_components(pieces: List[str]): List[List]
+  #_apply_components(pieces: List[str], components: List[List])
+  #_rotate_components(components: List[List], f: str): List[List]
+  #_rotate_pieces(pieces: List[str], face: str)
 }
 
 ' Define Scrambler Class
 class Scrambler {
-  #MOVES: list
-  #history: list
+  #MOVES: List[str]
+  #history: List[List[str]]
 
   +__init__()
-  +generate_scramble(length: int)
-  +apply_scramble(cube: RubiksCube, scramble: list)
+  +generate_scramble(length: int = 20): List[str]
+  +apply_scramble(cube: RubiksCube, scramble: List[str])
 }
 
 ' Define relationships between classes
 Piece <|-- Center
 Piece <|-- Edge
 Piece <|-- Corner
-RubiksCube o-- "many" Piece : contains
+RubiksCube o-- "*" Piece : contains
+RubiksCube --> Scrambler : uses
+
+note top of RubiksCube
+  Contains 26 pieces:
+  - 6 Centers
+  - 12 Edges
+  - 8 Corners
+end note
+
+note top of Scrambler
+  Generates valid scrambles:
+  - No consecutive same-face moves
+  - Tracks history
+end note
 
 @enduml
