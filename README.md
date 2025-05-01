@@ -21,9 +21,13 @@ rubix-cube-solver/
 │   ├── cube.py
 │   ├── pieces.py
 │   └── scramble.py
+├── solver/
+├── ├── __init__.py
+│   └── LBL_solver.py
 ├── tests/
 │   ├── test_cube.py
 │   ├── test_pieces.py
+│   ├── test_scramble.py
 │   └── test_utils.py
 ├── uml/
 │   └── rubix_cube.puml
