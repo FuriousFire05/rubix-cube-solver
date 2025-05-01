@@ -28,6 +28,9 @@ def test_cube_initial_state():
     assert R[1][1] == "RED", f"Expected Red at R center, got {R[1][1]}"
     assert L[1][1] == "ORANGE", f"Expected Orange at L center, got {L[1][1]}"
 
+def test_initial_state_is_solved():
+    cube = RubiksCube()
+    assert cube.is_solved() is True
 
 def test_get_face_invalid_face():
     cube = RubiksCube()
