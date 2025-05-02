@@ -4,7 +4,7 @@ import pygame
 from utils.faces import Face
 from core.cube import RubiksCube
 from core.scramble import Scrambler
-from solver.LBL_solver import LBL_Solver
+from solver.kociemba import Kociemba_Solver
 from visualizer.buttons import Button, RotatingColorButton
 
 
@@ -274,9 +274,8 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             flash_screen()
                             cube = RubiksCube()
                         elif button.text == "SOLVE":
-                            solver = LBL_Solver(cube)
-                            solver.solve_white_cross()
-                            solution_moves = solver.solution_moves
+                            solver = Kociemba_Solver()
+                            solution_moves = solver.get_solution()
                             solution_offset = 0
                         else:
                             move = button.text
