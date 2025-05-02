@@ -162,6 +162,58 @@ class RubiksCube:
                     face_grid[2 - y][z] = self._get_color(piece, face)
         return face_grid
 
+    def get_face_for_kociemba(self, face: Face):
+        """Return a 3x3 array of color initials for the given face."""
+        # Validate the face
+        if type(face) is not Face:
+            raise KeyError(f"Invalid face: {face}. Must be a Face Enum.")
+
+        face_grid = ""
+        self._rebuild_matrix()  # Ensure the matrix is up to date
+
+        if face == Face.U:
+            y = 2
+            for x in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid += self._get_color(piece, face)[0]
+
+        elif face == Face.D:
+            y = 0
+            for x in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid += self._get_color(piece, face)[0]
+
+        elif face == Face.F:
+            z = 2
+            for x in range(3):
+                for y in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid += self._get_color(piece, face)[0]
+
+        elif face == Face.B:
+            z = 0
+            for x in range(3):
+                for y in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid += self._get_color(piece, face)[0]
+
+        elif face == Face.R:
+            x = 2
+            for y in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid += self._get_color(piece, face)[0]
+
+        elif face == Face.L:
+            x = 0
+            for y in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid += self._get_color(piece, face)[0]
+
+        return face_grid
     # -------- Helper Functions --------
     def _get_color(self, piece, face) -> str:
         """Fetch the color of a piece for a specific face."""
@@ -336,6 +388,16 @@ class RubiksCube:
             if set(colors).issubset(piece_colors):
                 return piece
         return None
+    
+    def toString(self):
+        U = self.get_face_for_kociemba(Face.U)
+        D = self.get_face_for_kociemba(Face.D)
+        F = self.get_face_for_kociemba(Face.F)
+        B = self.get_face_for_kociemba(Face.B)
+        R = self.get_face_for_kociemba(Face.R)
+        L = self.get_face_for_kociemba(Face.L)
+
+        return (U + R + F + D + L + B)
 
     # -------- Rotation Functions --------
     def U(self):
