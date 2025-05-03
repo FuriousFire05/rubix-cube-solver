@@ -191,6 +191,7 @@ class RubiksCube:
         print()
 
         return output_string
+
     # -------- Helper Functions --------
     def _get_color(self, piece, face) -> str:
         """Fetch the color of a piece for a specific face."""
@@ -365,7 +366,7 @@ class RubiksCube:
             if set(colors).issubset(piece_colors):
                 return piece
         return None
-    
+
     def toString(self):
         U = self.get_face_for_kociemba(Face.U)
         D = self.get_face_for_kociemba(Face.D)
@@ -374,7 +375,7 @@ class RubiksCube:
         R = self.get_face_for_kociemba(Face.R)
         L = self.get_face_for_kociemba(Face.L)
 
-        return (U + R + F + D + L + B)
+        return U + R + F + D + L + B
 
     # -------- Rotation Functions --------
     def U(self):
@@ -511,4 +512,3 @@ class RubiksCube:
 
     def reset(self):
         self.__init__()
-        
