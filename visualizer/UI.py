@@ -274,7 +274,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             flash_screen()
                             cube = RubiksCube()
                         elif button.text == "SOLVE":
-                            solver = Kociemba_Solver()
+                            solver = Kociemba_Solver(cube)
                             solution_moves = solver.get_solution()
                             solution_offset = 0
                         else:

@@ -7,7 +7,7 @@ from utils.colors import Color
 
 class RubiksCube:
     def __init__(self):
-        """Initialize a 3x3x3 Rubik's Cube."""
+        """Initialize the Rubik's Cube in a solved state and setup move history."""
 
         # Dictionary to hold all physical pieces (each piece is unique)
         self.pieces = {}
@@ -165,55 +165,32 @@ class RubiksCube:
     def get_face_for_kociemba(self, face: Face):
         """Return a 3x3 array of color initials for the given face."""
         # Validate the face
-        if type(face) is not Face:
-            raise KeyError(f"Invalid face: {face}. Must be a Face Enum.")
+        output_string = ""
 
-        face_grid = ""
-        self._rebuild_matrix()  # Ensure the matrix is up to date
+        U = self.get_face(Face.U)
+        D = self.get_face(Face.D)
+        F = self.get_face(Face.F)
+        B = self.get_face(Face.B)
+        R = self.get_face(Face.R)
+        L = self.get_face(Face.L)
 
-        if face == Face.U:
-            y = 2
-            for x in range(3):
-                for z in range(3):
-                    piece = self.matrix[x][y][z]
-                    face_grid += self._get_color(piece, face)[0]
+        # fmt: off
+        def print_row(row):
+            return "".join(row)
 
-        elif face == Face.D:
-            y = 0
-            for x in range(3):
-                for z in range(3):
-                    piece = self.matrix[x][y][z]
-                    face_grid += self._get_color(piece, face)[0]
+        for _ in zip(U, R, F, D, L, B):
+            for i in range(3):
+                output_string += print_row(_[i])
+        print()
+        for row in U:
+            output_string+=print_row(row)
+        for i in range(3):
+            print(print_row(L[i]) + "\t" + print_row(F[i]) + "\t" + print_row(R[i]) + "\t" + print_row(B[i]))
+        for row in D:
+            print("\t\t\t" + print_row(row))
+        print()
 
-        elif face == Face.F:
-            z = 2
-            for x in range(3):
-                for y in range(3):
-                    piece = self.matrix[x][y][z]
-                    face_grid += self._get_color(piece, face)[0]
-
-        elif face == Face.B:
-            z = 0
-            for x in range(3):
-                for y in range(3):
-                    piece = self.matrix[x][y][z]
-                    face_grid += self._get_color(piece, face)[0]
-
-        elif face == Face.R:
-            x = 2
-            for y in range(3):
-                for z in range(3):
-                    piece = self.matrix[x][y][z]
-                    face_grid += self._get_color(piece, face)[0]
-
-        elif face == Face.L:
-            x = 0
-            for y in range(3):
-                for z in range(3):
-                    piece = self.matrix[x][y][z]
-                    face_grid += self._get_color(piece, face)[0]
-
-        return face_grid
+        return output_string
     # -------- Helper Functions --------
     def _get_color(self, piece, face) -> str:
         """Fetch the color of a piece for a specific face."""
@@ -531,3 +508,7 @@ class RubiksCube:
         self.move_history.pop()
         self.move_history.pop()
         self.move_history[-1] = "L'"
+
+    def reset(self):
+        self.__init__()
+        
