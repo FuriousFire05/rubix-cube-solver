@@ -10,4 +10,6 @@ if __name__ == "__main__":
     scrambler = Scrambler()
     cube = RubiksCube()
 
+    print(cube.toString())
+
     cube = display_cube(cube, scrambler)

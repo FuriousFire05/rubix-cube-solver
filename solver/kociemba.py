@@ -9,4 +9,4 @@ class Kociemba_Solver:
         self.cube_string = cube.toString()
 
     def get_solution(self):
-        return kociemba.solve(self.cube_string)
+        return kociemba.solve(self.cube_string).split()

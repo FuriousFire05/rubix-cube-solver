@@ -165,32 +165,61 @@ class RubiksCube:
     def get_face_for_kociemba(self, face: Face):
         """Return a 3x3 array of color initials for the given face."""
         # Validate the face
-        output_string = ""
+        if type(face) is not Face:
+            raise KeyError(f"Invalid face: {face}. Must be a Face Enum.")
 
-        U = self.get_face(Face.U)
-        D = self.get_face(Face.D)
-        F = self.get_face(Face.F)
-        B = self.get_face(Face.B)
-        R = self.get_face(Face.R)
-        L = self.get_face(Face.L)
+        face_grid = [["" for _ in range(3)] for _ in range(3)]
+        self._rebuild_matrix()  # Ensure the matrix is up to date
 
-        # fmt: off
-        def print_row(row):
-            return "".join(row)
+        if face == Face.U:
+            y = 2
+            for x in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[z][x] = self._get_color(piece, face)[0]
 
-        for _ in zip(U, R, F, D, L, B):
-            for i in range(3):
-                output_string += print_row(_[i])
-        print()
-        for row in U:
-            output_string+=print_row(row)
-        for i in range(3):
-            print(print_row(L[i]) + "\t" + print_row(F[i]) + "\t" + print_row(R[i]) + "\t" + print_row(B[i]))
-        for row in D:
-            print("\t\t\t" + print_row(row))
-        print()
+        elif face == Face.D:
+            y = 0
+            for x in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - z][x] = self._get_color(piece, face)[0]
 
-        return output_string
+        elif face == Face.F:
+            z = 2
+            for x in range(3):
+                for y in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - y][x] = self._get_color(piece, face)[0]
+
+        elif face == Face.B:
+            z = 0
+            for x in range(3):
+                for y in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - y][2 - x] = self._get_color(piece, face)[0]
+
+        elif face == Face.R:
+            x = 2
+            for y in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - y][2 - z] = self._get_color(piece, face)[0]
+
+        elif face == Face.L:
+            x = 0
+            for y in range(3):
+                for z in range(3):
+                    piece = self.matrix[x][y][z]
+                    face_grid[2 - y][z] = self._get_color(piece, face)[0]
+
+        face_string = ""
+
+        for row in face_grid:
+            for c in row:
+                face_string += c
+
+        return face_string
 
     # -------- Helper Functions --------
     def _get_color(self, piece, face) -> str:
@@ -375,7 +404,11 @@ class RubiksCube:
         R = self.get_face_for_kociemba(Face.R)
         L = self.get_face_for_kociemba(Face.L)
 
-        return U + R + F + D + L + B
+        face_map = {"Y": "U", "R": "R", "B": "F", "W": "D", "O": "L", "G": "B"}
+
+        trans_table = str.maketrans(face_map)
+
+        return (U + R + F + D + L + B).translate(trans_table)
 
     # -------- Rotation Functions --------
     def U(self):
