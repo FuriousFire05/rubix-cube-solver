@@ -1,0 +1,20 @@
+black @ file:///home/conda/feedstock_root/build_artifacts/black-recipe_1742502750715/work
+cffi==1.17.1
+click @ file:///D:/bld/click_1734858834134/work
+colorama @ file:///home/conda/feedstock_root/build_artifacts/colorama_1733218098505/work
+coverage @ file:///D:/bld/coverage_1743381246746/work
+exceptiongroup @ file:///home/conda/feedstock_root/build_artifacts/exceptiongroup_1733208806608/work
+future==0.16.0
+iniconfig @ file:///home/linux1/recipes/ci/iniconfig_1610983019677/work
+kociemba==1.2.1
+mypy_extensions @ file:///home/conda/feedstock_root/build_artifacts/mypy_extensions_1745776566517/work
+packaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1745345660/work
+pathspec @ file:///home/conda/feedstock_root/build_artifacts/pathspec_1733233363808/work
+platformdirs @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_platformdirs_1742485085/work
+pluggy @ file:///home/conda/feedstock_root/build_artifacts/pluggy_1733222765875/work
+pycparser==2.22
+pygame==2.6.1
+pytest @ file:///home/conda/feedstock_root/build_artifacts/pytest_1740946542080/work
+ruff @ file:///D:/bld/ruff_1746122974222/work
+tomli @ file:///home/conda/feedstock_root/build_artifacts/tomli_1733256695513/work
+typing_extensions @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_typing_extensions_1744302253/work
