@@ -26,8 +26,8 @@ This solver uses Kociemba's 2 phase algorithm to generate a solution for any scr
 
 ## 📸 Screenshots
 
-![Output](Output.png)
-![Scrambled State](Scrambled.png)
+![Output1](Output1.png)
+![Output2](Output2.png)
 
 ---
 
