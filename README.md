@@ -70,18 +70,19 @@ This solver uses Kociemba's 2 phase algorithm to generate a solution for any scr
 
 ## 🔧 Installation
 
-1. ### Prerequisites
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/FuriousFire05/rubix-cube-solver.git
 cd rubix-cube-solver
 ```
 
-2. ### Install dependencies
+### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 Make sure you have Python 3.11+ installed.
 
+---
 
 ## 🧪 Usage
 
@@ -90,6 +91,7 @@ Run the main GUI app:
 python main.py
 ```
 
+---
 
 ## 🧠 How It Works
 
