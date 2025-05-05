@@ -28,6 +28,7 @@ Thumbs.db
 
 # Ignore PNG output files
 uml/*.png
+*.png
 
 # Ignore the PlantUML JAR file
 uml/plantuml.jar
