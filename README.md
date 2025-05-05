@@ -62,8 +62,11 @@ This solver uses Kociemba's 2 phase algorithm to generate a solution for any scr
 ├── .gitignore
 ├── LICENSE
 ├── main.py
+├── Output1.png
+├── Output2.png
 ├── pytest.ini
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 ---
