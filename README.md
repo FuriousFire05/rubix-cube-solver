@@ -1,21 +1,40 @@
 # Rubik's Cube Solver 🧩
 
-An interactive 2D Rubik’s Cube visualizer built in **Python** using **Pygame**.  
-You can rotate faces in real-time using clickable buttons — and watch the cube react instantly!
+A Python-based Rubik's Cube solver that uses the Kociemba two-phase alogirthm to find optimal or near-optimal solutions for any valid cube state.
+Includes a visualizer built with Pygame and options for scrambling, manual input and visual feedback
 
 This project models the cube using object-oriented programming and is built from scratch with clean modular code.  
-Eventually, this will grow into a full solver with scrambling and automated solving algorithms.
+This solver uses Kociemba's 2 phase algorithm to generate a solution for any scramble in about **20 moves!**
 
-This project is being built from scratch, hence might have limited features
-I am trying my best to reduce the number of bugs
 
-🤗
+## 🚀 Features
+
+- 🔍 Solves any valid Rubik’s Cube using the Kociemba algorithm
+
+- 🧠 Fast and efficient 2-phase solving
+
+- 😎 Fully interactive 2D Layout of a 3D Rubik's Cube and Real-time visual rotation with button clicks
+
+- 🎨 Pygame-based cube visualizer with move history
+
+- 🎲 Random scrambler built-in
+
+- 🧪 Well-structured and modular codebase for future algorithm integrations (e.g., Layer-by-Layer)
+
+- 🛠️ Clean OOP design with ```core/```, ```solver/```, and ```visualizer/``` modules
+
+
+## 📸 Screenshots
+
+![Output](Output.png)
+![Scrambled State](Scrambled.png)
+
 ---
 
 ## 📂 Project Structure
 
 ```plaintext
-rubix-cube-solver/
+📦rubix-cube-solver/
 ├── core/
 │   ├── __init__.py
 │   ├── cube.py
@@ -23,7 +42,7 @@ rubix-cube-solver/
 │   └── scramble.py
 ├── solver/
 ├── ├── __init__.py
-│   └── LBL_solver.py
+│   └── kociemba.py
 ├── tests/
 │   ├── test_cube.py
 │   ├── test_pieces.py
@@ -49,66 +68,63 @@ rubix-cube-solver/
 
 ---
 
-## 🚀 How to Run
+## 🔧 Installation
 
-### Prerequisites
-
- - Make sure Python 3.11+ is installed
- - Install Pygame and dependencies
-
+1. ### Prerequisites
 ```bash
-pip install pygame pytest
+git clone https://github.com/FuriousFire05/rubix-cube-solver.git
+cd rubix-cube-solver
 ```
-(or activate your conda environment if you're using one.)
 
-### Run the Visualizer
+2. ### Install dependencies
+```bash
+pip install -r requirements.txt
+```
+Make sure you have Python 3.11+ installed.
 
+
+## 🧪 Usage
+
+Run the main GUI app:
 ```bash
 python main.py
 ```
 
-### Run Unit Tests
 
-```bash
-pytest
-```
+## 🧠 How It Works
 
-## 🧰 Tech Stack
+This solver uses the Kociemba algorithm, which works in two phases:
 
-- **Python** 3.11+
-- **Pygame** - for 2D visualization
-- **OOP Design** - clean modular structure
-- **Data Structures** – Multi-dimensional arrays (2D and 3D), HashMaps, enums, and custom classes
-- **PlantUML** - for UML diagrams
-- **Pytest** - for testing
+- **Phase 1:** Reduces the cube to a specific subgroup
+- **Phase 2:** Solves the cube from that subgroup in fewer moves
+
+Learn more about the algorithm: [Kociemba’s site](https://kociemba.org/)
+
+
+## 📦 Dependencies
+
+- ```kociemba```
+- ```pygame```
+- ```enum34``` (if using Python < 3.4)
 
 ---
-
-## 😎 Features
-
-- Fully interactive 2D Layout of a 3D Rubik's Cube
-- Real-time visual rotation with button clicks
-- Reset and Scramble buttons
-- Move History Display
-- Intuitive UI using Pygame
-- Color-accurate representation of all six faces
-- Clean and scalable object-oriented codebase
 
 ## 🛠️ Upcoming Features
 
 - Ability to input custom cube states
-- Solving algorithms (beginner -> advanced)
-- Optimized move generation
+- Color input via webcam
+- Animate solution step-by-step
+- Improve GUI design and responsiveness
 
 ## ✨ Notes
 
 - Each face color follows the standard convention:
-    - **U (Up)**: Yellow
-    - **D (Down)**: White
-    - **F (Front)**: Blue
-    - **B (Back)**: Green
-    - **R (Right)**: Red
-    - **L (Left)**: Orange
+    - **U (Up)**    :   Yellow
+    - **D (Down)**  :   White
+    - **F (Front)** :   Blue
+    - **B (Back)**  :   Green
+    - **R (Right)** :   Red
+    - **L (Left)**  :   Orange
 - UML diagrams are created using **PlantUML** for visualizing the cube's structure and logic.
 - UML diagrams are available in ```/uml/``` for internal logic representation
 
