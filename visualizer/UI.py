@@ -3,6 +3,7 @@
 import pygame
 from utils.faces import Face
 from core.cube import RubiksCube
+from core.moves import apply_move
 from core.scramble import Scrambler
 from solver.kociemba import Kociemba_Solver
 from visualizer.buttons import Button, RotatingColorButton
@@ -279,28 +280,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             solution_offset = 0
                         else:
                             move = button.text
-                            rotation_method = {
-                                "U": cube.U,
-                                "L": cube.L,
-                                "F": cube.F,
-                                "R": cube.R,
-                                "B": cube.B,
-                                "D": cube.D,
-                                "U2": cube.U2,
-                                "L2": cube.L2,
-                                "F2": cube.F2,
-                                "R2": cube.R2,
-                                "B2": cube.B2,
-                                "D2": cube.D2,
-                                "U'": cube.U_prime,
-                                "L'": cube.L_prime,
-                                "F'": cube.F_prime,
-                                "R'": cube.R_prime,
-                                "B'": cube.B_prime,
-                                "D'": cube.D_prime,
-                            }
-                            if move in rotation_method:
-                                rotation_method[move]()
+                            apply_move(cube, move)
 
         # Update the display after each move
         pygame.display.update()
