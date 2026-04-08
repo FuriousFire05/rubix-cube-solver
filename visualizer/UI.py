@@ -227,6 +227,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
     font = pygame.font.SysFont(None, 24)
 
     state = UIState()
+    state.mode = "move"
 
     state.solution_moves = []
     state.solution_offset = 0
@@ -275,19 +276,27 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             state.solution_moves.clear()
                             state.history_offset = 0
                             state.solution_offset = 0
+                            state.status_message = "History Cleared"
                         elif button.text == "SCRAMBLE":
                             scramble = scrambler.generate_scramble()
                             scrambler.apply_scramble(cube, scramble)
+                            state.status_message = "Cube Scrambled"
                         elif button.text == "RESET":
                             flash_screen()
                             cube = RubiksCube()
+                            state.status_message = "Cube Reset"
                         elif button.text == "SOLVE":
                             solver = Kociemba_Solver(cube)
                             state.solution_moves = solver.get_solution()
                             state.solution_offset = 0
+                            state.status_message = "Solution Generated"
                         else:
                             move = button.text
                             apply_move(cube, move)
+
+        # Draw status message
+        status_text = font.render(state.status_message, True, (255, 255, 255))
+        screen.blit(status_text, (50, 20))
 
         # Update the display after each move
         pygame.display.update()
