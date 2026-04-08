@@ -5,6 +5,7 @@ from utils.faces import Face
 from core.cube import RubiksCube
 from core.moves import apply_move
 from core.scramble import Scrambler
+from visualizer.ui_state import UIState
 from solver.kociemba import Kociemba_Solver
 from visualizer.buttons import Button, RotatingColorButton
 
@@ -222,18 +223,23 @@ buttons.append(solve_button)
 def display_cube(cube: RubiksCube, scrambler: Scrambler):
     """Display the Rubik's Cube using Pygame."""
     running = True
+
     font = pygame.font.SysFont(None, 24)
-    solution_moves = []
-    solution_offset = 0
-    scroll_offset = 0
+
+    state = UIState()
+
+    state.solution_moves = []
+    state.solution_offset = 0
+    state.history_offset = 0
+
     SCROLL_STEP = 20  # pixels to scroll per wheel event
 
     while running:
         screen.fill((100, 100, 100))  # grey background
 
         # Draw Move History window
-        draw_move_history(screen, cube.move_history, font, history_rect, scroll_offset)
-        draw_solution(screen, solution_moves, font, solution_rect, solution_offset)
+        draw_move_history(screen, cube.move_history, font, history_rect, state.history_offset)
+        draw_solution(screen, state.solution_moves, font, solution_rect, state.solution_offset)
 
         # Draw the Rubik's Cube faces
         for face, (x, y) in FACE_POSITIONS.items():
@@ -250,24 +256,25 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Scroll wheel up
                 if event.button == 4:
-                    scroll_offset += SCROLL_STEP
-                    solution_offset += SCROLL_STEP
+                    state.history_offset += SCROLL_STEP
+                    state.solution_offset += SCROLL_STEP
 
                 # Scroll wheel down
                 elif event.button == 5:
-                    scroll_offset -= SCROLL_STEP
-                    solution_offset -= SCROLL_STEP
+                    state.history_offset -= SCROLL_STEP
+                    state.solution_offset -= SCROLL_STEP
 
                 # Clamp scrolling to limits
-                scroll_offset = min(scroll_offset, 0)
-                solution_offset = min(solution_offset, 0)
+                state.history_offset = min(state.history_offset, 0)
+                state.solution_offset = min(state.solution_offset, 0)
 
                 for button in buttons:
                     if button.is_clicked(event.pos):
                         if button.text == "CLEAR":
                             cube.move_history.clear()
-                            solution_moves.clear()
-                            scroll_offset = 0
+                            state.solution_moves.clear()
+                            state.history_offset = 0
+                            state.solution_offset = 0
                         elif button.text == "SCRAMBLE":
                             scramble = scrambler.generate_scramble()
                             scrambler.apply_scramble(cube, scramble)
@@ -276,8 +283,8 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             cube = RubiksCube()
                         elif button.text == "SOLVE":
                             solver = Kociemba_Solver(cube)
-                            solution_moves = solver.get_solution()
-                            solution_offset = 0
+                            state.solution_moves = solver.get_solution()
+                            state.solution_offset = 0
                         else:
                             move = button.text
                             apply_move(cube, move)
