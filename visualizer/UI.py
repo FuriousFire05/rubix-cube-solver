@@ -375,10 +375,10 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                         elif button.text == "INPUT":
                             if state.mode == "move":
                                 state.mode = "input"
-                                state.status_message = "Input Mode Enabled"
+                                state.status_message = "Input Mode Active"
                             else:
                                 state.mode = "move"
-                                state.status_message = "Move Mode Enabled"
+                                state.status_message = "Move Mode Active"
                         elif button.text in ["W", "Y", "R", "O", "B", "G"]:
                             state.selected_color = button.text
                             state.status_message = f"Selected Color: {button.text}"
@@ -387,7 +387,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
 
                         elif button.text == "CANCEL":
                             state.mode = "move"
-                            state.status_message = "Returned to Move Mode"
+                            state.status_message = "Input Cancelled"
                         else:
                             move = button.text
                             apply_move(cube, move)
@@ -399,9 +399,13 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             face, row, col = result
                             state.input_state.set_color(face.name, row, col, state.selected_color)
 
-        # Draw status message
-        status_text = font.render(state.status_message, True, (255, 255, 255))
-        screen.blit(status_text, (50, 20))
+        # --- MODE DISPLAY ---
+        mode_text = font.render(f"MODE: {state.mode.upper()}", True, (255, 255, 255))
+        screen.blit(mode_text, (50, 10))
+
+        # --- STATUS DISPLAY ---
+        status_text = font.render(f"STATUS: {state.status_message}", True, (255, 255, 255))
+        screen.blit(status_text, (50, 35))
 
         # Update the display after each move
         pygame.display.update()

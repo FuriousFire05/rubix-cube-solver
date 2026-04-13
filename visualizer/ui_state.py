@@ -16,6 +16,7 @@ class UIState:
 
         # UI status message
         self.status_message = "Ready"
+        self.mode = "move"
 
         # Scroll positions
         self.history_offset = 0
