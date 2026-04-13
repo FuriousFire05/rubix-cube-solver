@@ -181,6 +181,24 @@ clear_button = Button(
     history_rect.x, history_rect.bottom, history_rect.width, 30, (200, 0, 0), "CLEAR"
 )
 
+validate_button = Button(
+    history_rect.x - 120,
+    history_rect.bottom,
+    100,
+    30,
+    (0, 200, 0),
+    "VALIDATE",
+)
+
+cancel_button = Button(
+    history_rect.x - 240,
+    history_rect.bottom,
+    100,
+    30,
+    (200, 200, 0),
+    "CANCEL",
+)
+
 # First row: Clockwise functions
 buttons_row_1 = [
     Button(
@@ -232,13 +250,45 @@ color_buttons = [
     ])
 ]
 
-buttons = buttons_row_1 + buttons_row_2 + buttons_row_3
-buttons.append(clear_button)
-buttons.append(scramble_button)
-buttons.append(reset_button)
-buttons.append(solve_button)
-buttons.append(input_button)
-buttons.extend(color_buttons)
+move_buttons = (
+    buttons_row_1
+    + buttons_row_2
+    + buttons_row_3
+    + [scramble_button, reset_button, solve_button, input_button]
+)
+
+input_mode_buttons = (
+    color_buttons
+    + [clear_button, validate_button, cancel_button]
+)
+
+def color_map(c):
+    return {
+        "W": WHITE,
+        "Y": YELLOW,
+        "R": RED,
+        "O": ORANGE,
+        "B": BLUE,
+        "G": GREEN,
+    }[c]
+
+def get_clicked_sticker(pos):
+    x_click, y_click = pos
+    sticker_size = FACE_SIZE // 3
+
+    for face, (x, y) in FACE_POSITIONS.items():
+        for row in range(3):
+            for col in range(3):
+                rect = pygame.Rect(
+                    x + col * sticker_size,
+                    y + row * sticker_size,
+                    sticker_size,
+                    sticker_size,
+                )
+                if rect.collidepoint(x_click, y_click):
+                    return face, row, col
+
+    return None
 
 # Main display function (UI logic)
 def display_cube(cube: RubiksCube, scrambler: Scrambler):
@@ -265,10 +315,19 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
 
         # Draw the Rubik's Cube faces
         for face, (x, y) in FACE_POSITIONS.items():
-            draw_face(x, y, cube.get_face(face))
+            if state.mode == "input":
+                face_colors = [
+                    [color_map(state.input_state.get_color(face.name, r, c)) for c in range(3)]
+                    for r in range(3)
+                ]
+                draw_face(x, y, face_colors)
+            else:
+                draw_face(x, y, cube.get_face(face))
 
         # Draw buttons
-        for button in buttons:
+        active_buttons = move_buttons if state.mode == "move" else input_mode_buttons
+
+        for button in active_buttons:
             button.draw(screen)
 
         # Event handling
@@ -290,7 +349,9 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                 state.history_offset = min(state.history_offset, 0)
                 state.solution_offset = min(state.solution_offset, 0)
 
-                for button in buttons:
+                active_buttons = move_buttons if state.mode == "move" else input_mode_buttons
+
+                for button in active_buttons:
                     if button.is_clicked(event.pos):
                         if button.text == "CLEAR":
                             cube.move_history.clear()
@@ -321,9 +382,22 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                         elif button.text in ["W", "Y", "R", "O", "B", "G"]:
                             state.selected_color = button.text
                             state.status_message = f"Selected Color: {button.text}"
+                        elif button.text == "VALIDATE":
+                            state.status_message = "Validation not implemented yet"
+
+                        elif button.text == "CANCEL":
+                            state.mode = "move"
+                            state.status_message = "Returned to Move Mode"
                         else:
                             move = button.text
                             apply_move(cube, move)
+                    
+                    # Handle sticker clicks in input mode
+                    if state.mode == "input" and state.selected_color:
+                        result = get_clicked_sticker(event.pos)
+                        if result:
+                            face, row, col = result
+                            state.input_state.set_color(face.name, row, col, state.selected_color)
 
         # Draw status message
         status_text = font.render(state.status_message, True, (255, 255, 255))
