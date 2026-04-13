@@ -1,4 +1,5 @@
 # ⚡ Rubix Pichu v1
+
 ## Rubik's Cube Solver & Simulator (Pichu Stage)
 An interactive Rubik's Cube simulator built with **Python + Pygame**, featuring real-time cube manipulation, move history tracking, optimal solving with the **Kociemba algorithm**, and a **manual input mode** powered by a draft-cube workflow.
 
