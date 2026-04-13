@@ -159,59 +159,6 @@ python main.py
 
 ---
 
-## 📦 Building an Executable
-
-To build an executable with PyInstaller:
-
-```bash
-pip install pyinstaller
-pyinstaller --onefile --noconsole main.py
-```
-
-The generated executable will be placed in:
-
-```text
-dist/main.exe
-```
-
-### Recommended note
-For distribution, it is often cleaner to publish the `.exe` through **GitHub Releases** instead of committing build artifacts to the repository.
-
----
-
-## ⚠️ EXE Troubleshooting
-
-If `main.exe` fails to launch and shows an error like **"ordinal not found"**, the most common fix is to do a **clean rebuild**:
-
-### Clean rebuild steps
-
-1. Delete these from the project root:
-   - `build/`
-   - `dist/`
-   - `main.spec`
-
-2. Reinstall PyInstaller in your active environment:
-
-```bash
-pip install --upgrade pyinstaller
-```
-
-3. Rebuild:
-
-```bash
-pyinstaller --clean --noconfirm --onefile --windowed main.py
-```
-
-### Safer fallback
-If `--onefile` still causes issues, build with `--onedir` instead:
-
-```bash
-pyinstaller --clean --noconfirm --onedir --windowed main.py
-```
-
-This produces a folder-based app that is often more reliable on Windows.
-
----
 
 ## 📐 UML
 
@@ -219,6 +166,12 @@ A UML diagram for the project is included in the `uml/` folder.
 
 - `rubix_cube.puml` → PlantUML source
 - `rubix_cube.jpg` → rendered diagram
+
+---
+
+## 🧱 System Design
+
+![Architecture](uml/rubix_cube.jpg)
 
 ---
 
