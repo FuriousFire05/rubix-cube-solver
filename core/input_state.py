@@ -10,14 +10,14 @@ class InputState:
         self.reset()
 
     def reset(self):
-        # Default solved colors
+        # Canonical solved cube orientation
         self.faces = {
-            "U": [["W"] * 3 for _ in range(3)],
-            "D": [["Y"] * 3 for _ in range(3)],
-            "F": [["G"] * 3 for _ in range(3)],
-            "B": [["B"] * 3 for _ in range(3)],
-            "L": [["O"] * 3 for _ in range(3)],
-            "R": [["R"] * 3 for _ in range(3)],
+            "U": [["Y"] * 3 for _ in range(3)],  # Yellow
+            "D": [["W"] * 3 for _ in range(3)],  # White
+            "F": [["B"] * 3 for _ in range(3)],  # Blue
+            "B": [["G"] * 3 for _ in range(3)],  # Green
+            "L": [["O"] * 3 for _ in range(3)],  # Orange
+            "R": [["R"] * 3 for _ in range(3)],  # Red
         }
 
     def set_color(self, face: str, row: int, col: int, color: str):
