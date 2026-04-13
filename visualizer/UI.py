@@ -220,13 +220,25 @@ buttons_row_3 = [
     for i, move in enumerate(["U'", "L'", "F'", "R'", "B'", "D'"])
 ]
 
+color_buttons = [
+    Button(50 + i * (button_width + 10), button_area_height + 420, button_width, button_height, color, label)
+    for i, (label, color) in enumerate([
+        ("W", WHITE),
+        ("Y", YELLOW),
+        ("R", RED),
+        ("O", ORANGE),
+        ("B", BLUE),
+        ("G", GREEN),
+    ])
+]
+
 buttons = buttons_row_1 + buttons_row_2 + buttons_row_3
 buttons.append(clear_button)
 buttons.append(scramble_button)
 buttons.append(reset_button)
 buttons.append(solve_button)
 buttons.append(input_button)
-
+buttons.extend(color_buttons)
 
 # Main display function (UI logic)
 def display_cube(cube: RubiksCube, scrambler: Scrambler):
@@ -306,6 +318,9 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             else:
                                 state.mode = "move"
                                 state.status_message = "Move Mode Enabled"
+                        elif button.text in ["W", "Y", "R", "O", "B", "G"]:
+                            state.selected_color = button.text
+                            state.status_message = f"Selected Color: {button.text}"
                         else:
                             move = button.text
                             apply_move(cube, move)
