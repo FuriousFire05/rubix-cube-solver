@@ -1,125 +1,238 @@
-# Rubik's Cube Solver 🧩
+# 🧩 Rubik's Cube Solver & Simulator
 
-A Python-based Rubik's Cube solver that uses the Kociemba two-phase alogirthm to find optimal or near-optimal solutions for any valid cube state.
-Includes a visualizer built with Pygame and options for scrambling, manual input and visual feedback
-
-This project models the cube using object-oriented programming and is built from scratch with clean modular code.  
-This solver uses Kociemba's 2 phase algorithm to generate a solution for any scramble in about **20 moves!**
-
-
-## 🚀 Features
-
-- 🔍 Solves any valid Rubik’s Cube using the Kociemba algorithm
-
-- 🧠 Fast and efficient 2-phase solving
-
-- 😎 Fully interactive 2D Layout of a 3D Rubik's Cube and Real-time visual rotation with button clicks
-
-- 🎨 Pygame-based cube visualizer with move history
-
-- 🎲 Random scrambler built-in
-
-- 🧪 Well-structured and modular codebase for future algorithm integrations (e.g., Layer-by-Layer)
-
-- 🛠️ Clean OOP design with ```core/```, ```solver/```, and ```visualizer/``` modules
-
-
-## 📸 Screenshots
-
-![Output1](Output1.png)
-![Output2](Output2.png)
+An interactive Rubik's Cube simulator built with **Python + Pygame**, featuring real-time cube manipulation, move history tracking, optimal solving with the **Kociemba algorithm**, and a **manual input mode** powered by a draft-cube workflow.
 
 ---
 
-## 📂 Project Structure
+## 🚀 Features
 
-```plaintext
-📦rubix-cube-solver/
+- 🎮 Interactive 2D Rubik's Cube simulator
+- 🔀 Random scramble generation
+- 🧠 Optimal / near-optimal solving using the Kociemba algorithm
+- ✍️ Manual cube input mode with editable **draft cube**
+- ✅ Validation before committing manual edits
+- 📜 Move history panel
+- 📋 Solution panel
+- 🖱️ Button-based controls for standard cube notation
+- 🧪 Piece-based cube engine instead of a simple sticker array
+
+---
+
+## 🧠 Project Architecture
+
+This project is built around a **piece-based Rubik's Cube engine**.
+
+Instead of storing the cube as six flat faces only, the simulator models:
+- **Centers**
+- **Edges**
+- **Corners**
+- piece positions in 3D space
+- face projections for rendering the unfolded 2D cube net
+
+### Live Cube vs Draft Cube
+
+The UI uses a **dual-cube workflow**:
+
+- **Live Cube** → the trusted cube used in move mode
+- **Draft Cube** → a temporary editable clone used in input mode
+
+### Input Mode Workflow
+
+1. Enter **Input Mode**
+2. A **draft cube** is created from the live cube
+3. Sticker edits are applied to the **draft cube**, not the live cube
+4. The edited draft cube is validated
+5. If valid, the draft cube replaces the live cube
+6. If invalid, changes are rejected or can be cancelled
+
+This keeps the main cube state safe while still allowing manual editing.
+
+---
+
+## 📁 Project Structure
+
+```text
+rubix-cube-solver/
 ├── core/
 │   ├── __init__.py
 │   ├── cube.py
+│   ├── moves.py
 │   ├── pieces.py
 │   └── scramble.py
 ├── solver/
-├── ├── __init__.py
+│   ├── __init__.py
 │   └── kociemba.py
-├── tests/
-│   ├── test_cube.py
-│   ├── test_pieces.py
-│   ├── test_scramble.py
-│   └── test_utils.py
-├── uml/
-│   └── rubix_cube.puml
 ├── utils/
 │   ├── __init__.py
 │   ├── colors.py
 │   └── faces.py
 ├── visualizer/
 │   ├── __init__.py
-│   ├── button.py
-│   └── UI.py
-├── .coveragerc
-├── .gitignore
+│   ├── UI.py
+│   ├── buttons.py
+│   └── ui_state.py
+├── screenshots/
+│   ├── editing.jpg
+│   ├── input_mode.jpg
+│   ├── scramble.jpg
+│   ├── solution.jpg
+│   ├── ui_default.jpg
+│   └── validation.jpg
+├── uml/
+│   ├── plantuml.jar
+│   ├── rubix_cube.png
+│   └── rubix_cube.puml
 ├── LICENSE
 ├── main.py
-├── Output1.png
-├── Output2.png
-├── pytest.ini
-├── README.md
+├── main.spec
 └── requirements.txt
 ```
 
 ---
 
-## 🔧 Installation
+## ⚙️ Tech Stack
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/FuriousFire05/rubix-cube-solver.git
-cd rubix-cube-solver
-```
-
-### 2. Install dependencies
-```bash
-pip install -r requirements.txt
-```
-Make sure you have Python 3.11+ installed.
+- **Python**
+- **Pygame**
+- **Kociemba**
+- **PyInstaller** (for executable packaging)
 
 ---
 
-## 🧪 Usage
+## ▶️ How to Run
 
-Run the main GUI app:
+### 1. Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 2. Run the app
+
 ```bash
 python main.py
 ```
 
 ---
 
-## 🧠 How It Works
+## 🎮 Controls
 
-This solver uses the Kociemba algorithm, which works in two phases:
+### Move Mode
 
-- **Phase 1:** Reduces the cube to a specific subgroup
-- **Phase 2:** Solves the cube from that subgroup in fewer moves
+- `U, D, L, R, F, B`
+- `U2, D2, L2, R2, F2, B2`
+- `U', D', L', R', F', B'`
+- `SCRAMBLE`
+- `RESET`
+- `SOLVE`
+- `INPUT`
 
-Learn more about the algorithm: [Kociemba’s site](https://kociemba.org/)
+### Input Mode
 
-
-## 📦 Dependencies
-
-- ```kociemba```
-- ```pygame```
-- ```enum34``` (if using Python < 3.4)
+- Select a color button (`W, Y, R, O, B, G`)
+- Click stickers on the cube to edit the **draft cube**
+- `VALIDATE` to confirm and apply
+- `CANCEL` to discard
+- `CLEAR` to reset the draft edits
 
 ---
 
-## 🛠️ Upcoming Features
+## 🖼️ Screenshots
 
-- Ability to input custom cube states
-- Color input via webcam
-- Animate solution step-by-step
-- Improve GUI design and responsiveness
+### Default UI
+![Default UI](screenshots/ui_default.jpg)
+
+### Scrambled Cube
+![Scramble](screenshots/scramble.jpg)
+
+### Solver Output
+![Solution](screenshots/solution.jpg)
+
+### Input Mode
+![Input Mode](screenshots/input_mode.jpg)
+
+### Editing Stickers
+![Editing](screenshots/editing.jpg)
+
+### Validation Flow
+![Validation](screenshots/validation.jpg)
+
+---
+
+## 📦 Building an Executable
+
+To build an executable with PyInstaller:
+
+```bash
+pip install pyinstaller
+pyinstaller --onefile --noconsole main.py
+```
+
+The generated executable will be placed in:
+
+```text
+dist/main.exe
+```
+
+### Recommended note
+For distribution, it is often cleaner to publish the `.exe` through **GitHub Releases** instead of committing build artifacts to the repository.
+
+---
+
+## ⚠️ EXE Troubleshooting
+
+If `main.exe` fails to launch and shows an error like **"ordinal not found"**, the most common fix is to do a **clean rebuild**:
+
+### Clean rebuild steps
+
+1. Delete these from the project root:
+   - `build/`
+   - `dist/`
+   - `main.spec`
+
+2. Reinstall PyInstaller in your active environment:
+
+```bash
+pip install --upgrade pyinstaller
+```
+
+3. Rebuild:
+
+```bash
+pyinstaller --clean --noconfirm --onefile --windowed main.py
+```
+
+### Safer fallback
+If `--onefile` still causes issues, build with `--onedir` instead:
+
+```bash
+pyinstaller --clean --noconfirm --onedir --windowed main.py
+```
+
+This produces a folder-based app that is often more reliable on Windows.
+
+---
+
+## 📐 UML
+
+A UML diagram for the project is included in the `uml/` folder.
+
+- `rubix_cube.puml` → PlantUML source
+- `rubix_cube.jpg` → rendered diagram
+
+---
+
+## 🚀 Future Scope
+
+This project is intended as **V1 / Pichu** of a larger Rubik's Cube toolchain.
+
+Planned future evolution includes:
+- 3D cube visualization
+- computer vision cube input
+- guided learning / teaching mode
+- richer UI and animations
+
+---
 
 ## ✨ Notes
 
@@ -130,10 +243,14 @@ Learn more about the algorithm: [Kociemba’s site](https://kociemba.org/)
     - **B (Back)**  :   Green
     - **R (Right)** :   Red
     - **L (Left)**  :   Orange
-- UML diagrams are created using **PlantUML** for visualizing the cube's structure and logic.
-- UML diagrams are available in ```/uml/``` for internal logic representation
 
-## 👤 Author
+Built as a deep-dive project in:
+- simulation systems
+- algorithmic problem solving
+- UI-driven state management
+- software architecture for interactive tools
+
+## 👨‍💻 Author
 
 Created by [FuriousFire](https://github.com/FuriousFire05)
 
