@@ -335,6 +335,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
+                button_clicked = False
                 # Scroll wheel up
                 if event.button == 4:
                     state.history_offset += SCROLL_STEP
@@ -353,6 +354,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
 
                 for button in active_buttons:
                     if button.is_clicked(event.pos):
+                        button_clicked = True
                         if button.text == "CLEAR":
                             cube.move_history.clear()
                             state.solution_moves.clear()
@@ -394,6 +396,13 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                     
                     # Handle sticker clicks in input mode
                     if state.mode == "input" and state.selected_color:
+                        result = get_clicked_sticker(event.pos)
+                        if result:
+                            face, row, col = result
+                            state.input_state.set_color(face.name, row, col, state.selected_color)
+                    
+                    # Handle sticker clicks in input mode (only if no button was clicked)
+                    if not button_clicked and state.mode == "input" and state.selected_color:
                         result = get_clicked_sticker(event.pos)
                         if result:
                             face, row, col = result
