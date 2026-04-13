@@ -2,6 +2,7 @@
 
 from core.input_state import InputState
 
+
 class UIState:
     def __init__(self):
         # Mode: "move" or "input"
@@ -16,7 +17,6 @@ class UIState:
 
         # UI status message
         self.status_message = "Ready"
-        self.mode = "move"
 
         # Scroll positions
         self.history_offset = 0
@@ -25,4 +25,8 @@ class UIState:
         # Animation flag (for future)
         self.is_animating = False
 
+        # Legacy input state (to be phased out)
         self.input_state = InputState()
+
+        # Temporary editable cube used during input mode
+        self.draft_cube = None
