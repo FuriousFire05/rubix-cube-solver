@@ -8,6 +8,7 @@ from core.scramble import Scrambler
 from visualizer.ui_state import UIState
 from solver.kociemba import Kociemba_Solver
 from visualizer.buttons import Button, RotatingColorButton
+from solver.validation import validate_input_state
 
 
 # Initialize pygame
@@ -385,8 +386,12 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             state.selected_color = button.text
                             state.status_message = f"Selected Color: {button.text}"
                         elif button.text == "VALIDATE":
-                            state.status_message = "Validation not implemented yet"
+                            is_valid, message = validate_input_state(state.input_state)
 
+                            if is_valid:
+                                state.status_message = "Cube Validated Successfully"
+                            else:
+                                state.status_message = message
                         elif button.text == "CANCEL":
                             state.mode = "move"
                             state.status_message = "Input Cancelled"
