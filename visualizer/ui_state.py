@@ -1,7 +1,20 @@
 # visualizer/ui_state.py
 
-from core.input_state import InputState
+"""
+ui_state.py
 
+UI state container for the Rubik's Cube application.
+
+This module defines the UIState class, which stores transient interface state
+separately from the live cube engine.
+
+It tracks:
+- current mode (move or input)
+- selected input color
+- solution and scroll state
+- status messages
+- temporary draft cube used during input mode
+"""
 
 class UIState:
     def __init__(self):
@@ -21,12 +34,6 @@ class UIState:
         # Scroll positions
         self.history_offset = 0
         self.solution_offset = 0
-
-        # Animation flag (for future)
-        self.is_animating = False
-
-        # Legacy input state (to be phased out)
-        self.input_state = InputState()
 
         # Temporary editable cube used during input mode
         self.draft_cube = None

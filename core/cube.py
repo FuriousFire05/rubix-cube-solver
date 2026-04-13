@@ -1,5 +1,19 @@
 # core/cube.py
 
+"""
+cube.py
+
+Core Rubik's Cube engine.
+
+This module defines the main RubiksCube class and is responsible for:
+- storing the full cube state using piece objects
+- projecting the 3D cube into 2D face views for rendering
+- applying rotations and move transformations
+- generating a Kociemba-compatible cube string representation
+
+This is the main source of truth for the live cube used by the simulator.
+"""
+
 from core.pieces import Center, Edge, Corner
 from utils.faces import Face
 from utils.colors import Color

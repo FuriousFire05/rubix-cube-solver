@@ -1,5 +1,20 @@
-import random
+# core/scramble.py
 
+"""
+scramble.py
+
+Scramble generation and application utilities.
+
+This module is responsible for:
+- generating random valid scramble sequences
+- tracking scramble history
+- applying scrambles to a RubiksCube instance
+
+It uses standard cube notation and the shared move dispatch system.
+"""
+
+import random
+from core.moves import apply_move
 
 class Scrambler:
     # fmt: off
@@ -36,14 +51,4 @@ class Scrambler:
 
     def apply_scramble(self, cube, scramble):
         for move in scramble:
-            face = move[0]
-            modifier = move[1:] if len(move) > 1 else ""
-
-            if modifier == "":
-                method = getattr(cube, face)  # e.g., U, D, F, B, R, L
-            elif modifier == "'":
-                method = getattr(cube, f"{face}_prime")  # e.g., U', D', F', B', R', L'
-            elif modifier == "2":
-                method = getattr(cube, f"{face}2")  # e.g., U2, D2, F2, B2, R2, L2
-
-            method()  # Apply the selected move
+            apply_move(cube, move)

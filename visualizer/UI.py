@@ -1,5 +1,23 @@
 # visualizer/UI.py
 
+"""
+UI.py
+
+Main Pygame interface for the Rubik's Cube simulator.
+
+This module handles:
+- rendering the cube net in move mode and input mode
+- drawing history, solution, status, and control panels
+- processing button clicks and sticker selection
+- switching between live cube mode and draft cube input mode
+- validating and committing draft cube edits
+
+The UI uses a draft cube workflow:
+- move mode renders the trusted live cube
+- input mode renders a temporary editable draft cube
+- validated draft changes are committed back to the live cube
+"""
+
 import pygame
 from copy import deepcopy
 
@@ -329,20 +347,39 @@ input_mode_buttons = color_buttons + [clear_button, validate_button, cancel_butt
 # UI helpers
 # -------------------------
 
+def draw_mode_banner(font, state):
+    if state.mode == "move":
+        color = (0, 120, 255)   # blue
+        label = "MOVE MODE"
+    else:
+        color = (200, 180, 0)   # yellow
+        label = "INPUT MODE"
+
+    banner_rect = pygame.Rect(0, 0, WIDTH, 35)
+    pygame.draw.rect(screen, color, banner_rect)
+
+    text = font.render(label, True, (0, 0, 0))
+    screen.blit(text, (10, 5))
+
+
+def draw_selected_outline(button):
+    pygame.draw.rect(screen, (255, 255, 255), button.rect, 3, border_radius=6)
+
+
 def get_active_buttons(state):
     return move_buttons if state.mode == "move" else input_mode_buttons
 
 
 def render_info_bar(font, state):
     mode_text = font.render(f"MODE: {state.mode.upper()}", True, WHITE)
-    screen.blit(mode_text, (50, 10))
+    screen.blit(mode_text, (10, 50))
 
-    status_text = font.render(f"STATUS: {state.status_message}", True, WHITE)
-    screen.blit(status_text, (50, 35))
+    status_text = font.render(f"{state.status_message}", True, (255, 255, 255))
+    screen.blit(status_text, (10, 75))
 
     selected = state.selected_color if state.selected_color else "-"
     selected_text = font.render(f"SELECTED: {selected}", True, WHITE)
-    screen.blit(selected_text, (50, 60))
+    screen.blit(selected_text, (10, 100))
 
 
 def render_move_mode(cube, state, font):
@@ -506,6 +543,16 @@ def validate_and_solve_draft_cube(draft_cube):
         return False, "Invalid cube configuration (unsolvable)", []
 
 
+def is_button_disabled(button, state):
+    if state.mode == "move":
+        return False
+
+    # INPUT MODE restrictions
+    if button.text in ["SCRAMBLE", "RESET", "SOLVE", "INPUT"]:
+        return True
+
+    return False
+
 # -------------------------
 # Main display function
 # -------------------------
@@ -527,6 +574,7 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
 
     while running:
         screen.fill(GREY)
+        draw_mode_banner(font, state)
 
         if state.mode == "move":
             render_move_mode(cube, state, font)
@@ -535,7 +583,24 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
 
         active_buttons = get_active_buttons(state)
         for button in active_buttons:
-            button.draw(screen)
+            if is_button_disabled(button, state):
+                # dim color
+                original = button.base_color if hasattr(button, "base_color") else button.color
+                dimmed = tuple(int(c * 0.5) for c in original)
+                pygame.draw.rect(screen, dimmed, button.rect, border_radius=6)
+                pygame.draw.rect(screen, (0, 0, 0), button.rect, 2, border_radius=6)
+
+                text = button.font.render(button.text, True, (80, 80, 80))
+                text_rect = text.get_rect(center=button.rect.center)
+                screen.blit(text, text_rect)
+            else:
+                button.draw(screen)
+
+        # Highlight selected color button (INPUT mode)
+        if state.mode == "input" and state.selected_color:
+            for btn in color_buttons:
+                if btn.text == state.selected_color:
+                    draw_selected_outline(btn)
 
         render_info_bar(font, state)
 
@@ -561,6 +626,11 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
 
                 for button in active_buttons:
                     if button.is_clicked(event.pos):
+
+                        # BLOCK disabled buttons
+                        if is_button_disabled(button, state):
+                            continue
+
                         button_clicked = True
 
                         if button.text == "SCRAMBLE":

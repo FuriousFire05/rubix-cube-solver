@@ -1,7 +1,20 @@
 # core/moves.py
 
-from core.cube import RubiksCube
+"""
+moves.py
 
+Move dispatch helper for the Rubik's Cube engine.
+
+This module centralizes move execution by mapping standard cube notation
+(e.g. U, R', F2) to the corresponding RubiksCube methods.
+
+It is used to keep move logic consistent across:
+- manual move button input
+- scramble application
+- future replay / animation systems
+"""
+
+from core.cube import RubiksCube
 
 def apply_move(cube: RubiksCube, move: str) -> None:
     """

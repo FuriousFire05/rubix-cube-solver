@@ -1,44 +1,32 @@
-# .gitignore
-
-# Ignore compiled binaries and object files
-/bin/
-*.exe
-*.out
-*.o
-
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
-*.py[cod]
-*.so
+*.pyc
 
-# Virtual environments
-env/
+# Virtual env
 venv/
-.rubix/
+env/
+*.env
 
-# VS Code settings
+# IDE
 .vscode/
+.idea/
 
-# Jupyter Notebook checkpoints (if ever used)
-.ipynb_checkpoints/
+# Build files
+build/
+dist/
+*.exe
+*.spec
 
-# OS-related junk
-.DS_Store
-Thumbs.db
-
-# Ignore PNG output files
-uml/*.png
-
-# Ignore the PlantUML JAR file
-uml/plantuml.jar
-
-# Ignore pytest cache files
+# Testing
 .pytest_cache/
-
-# Ignore coverage reports
-htmlcov/
-coverage_html_report/
 .coverage
 
-# Ignore ruff files
-.ruff_cache/
+# Screenshots
+screenshots/
+*.png
+*.jpg
+*.jpeg
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,7 +1,22 @@
 # visualizer/buttons.py
 
-import pygame
+"""
+buttons.py
 
+Reusable button components for the Pygame UI.
+
+This module defines:
+- a standard Button class
+- a RotatingColorButton class for animated controls
+
+These classes handle:
+- rendering
+- hover styling
+- text fitting
+- click detection
+"""
+
+import pygame
 
 class Button:
     def __init__(self, x, y, width, height, color, text, font_size=22):
@@ -27,8 +42,18 @@ class Button:
         pygame.draw.rect(screen, (0, 0, 0), self.rect, 2, border_radius=6)
 
         # Render text
-        text_surface = self.font.render(self.text, True, (0, 0, 0))
+        font_size = 22
+        font = pygame.font.SysFont(None, font_size)
+
+        text_surface = font.render(self.text, True, (0, 0, 0))
+
+        while text_surface.get_width() > self.rect.width - 10 and font_size > 12:
+            font_size -= 1
+            font = pygame.font.SysFont(None, font_size)
+            text_surface = font.render(self.text, True, (0, 0, 0))
+
         text_rect = text_surface.get_rect(center=self.rect.center)
+        screen.blit(text_surface, text_rect)
 
         screen.blit(text_surface, text_rect)
 
