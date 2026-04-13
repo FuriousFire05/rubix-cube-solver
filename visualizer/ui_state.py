@@ -1,5 +1,7 @@
 # visualizer/ui_state.py
 
+from core.input_state import InputState
+
 class UIState:
     def __init__(self):
         # Mode: "move" or "input"
@@ -22,5 +24,4 @@ class UIState:
         # Animation flag (for future)
         self.is_animating = False
 
-        # Input state placeholder (future use)
-        self.input_state = None
+        self.input_state = InputState()
