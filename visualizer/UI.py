@@ -147,6 +147,14 @@ solve_button = Button(
     "SOLVE",
 )
 
+input_button = Button(
+    200,  # adjust position if needed
+    button_area_height + 350,
+    button_width,
+    button_height,
+    (0, 200, 200),  # cyan-ish color
+    "INPUT",
+)
 
 # Define Button for Scrambling
 scramble_button = RotatingColorButton(
@@ -217,6 +225,7 @@ buttons.append(clear_button)
 buttons.append(scramble_button)
 buttons.append(reset_button)
 buttons.append(solve_button)
+buttons.append(input_button)
 
 
 # Main display function (UI logic)
@@ -290,6 +299,13 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                             state.solution_moves = solver.get_solution()
                             state.solution_offset = 0
                             state.status_message = "Solution Generated"
+                        elif button.text == "INPUT":
+                            if state.mode == "move":
+                                state.mode = "input"
+                                state.status_message = "Input Mode Enabled"
+                            else:
+                                state.mode = "move"
+                                state.status_message = "Move Mode Enabled"
                         else:
                             move = button.text
                             apply_move(cube, move)
