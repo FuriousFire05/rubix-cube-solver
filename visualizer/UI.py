@@ -1,6 +1,7 @@
 # visualizer/UI.py
 
 import pygame
+from copy import deepcopy
 from utils.faces import Face
 from core.cube import RubiksCube
 from core.moves import apply_move
@@ -8,7 +9,7 @@ from core.scramble import Scrambler
 from visualizer.ui_state import UIState
 from solver.kociemba import Kociemba_Solver
 from visualizer.buttons import Button, RotatingColorButton
-from solver.validation import validate_input_state
+from solver.validation import validate_input_state, convert_to_kociemba_string
 
 
 # Initialize pygame
@@ -291,6 +292,29 @@ def get_clicked_sticker(pos):
 
     return None
 
+def render_move_mode(screen, cube, state, font):
+    # Draw history & solution
+    draw_move_history(screen, cube.move_history, font, history_rect, state.history_offset)
+    draw_solution(screen, state.solution_moves, font, solution_rect, state.solution_offset)
+
+    # Draw cube
+    for face, (x, y) in FACE_POSITIONS.items():
+        draw_face(x, y, cube.get_face(face))
+
+
+def render_input_mode(screen, state, font):
+    # Draw history & solution (optional, keep for now)
+    draw_move_history(screen, [], font, history_rect, state.history_offset)
+    draw_solution(screen, state.solution_moves, font, solution_rect, state.solution_offset)
+
+    # Draw draft cube (FOR NOW still using InputState — will fix next step)
+    for face, (x, y) in FACE_POSITIONS.items():
+        face_colors = [
+            [color_map(state.input_state.get_color(face.name, r, c)) for c in range(3)]
+            for r in range(3)
+        ]
+        draw_face(x, y, face_colors)
+
 # Main display function (UI logic)
 def display_cube(cube: RubiksCube, scrambler: Scrambler):
     """Display the Rubik's Cube using Pygame."""
@@ -310,20 +334,10 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
     while running:
         screen.fill((100, 100, 100))  # grey background
 
-        # Draw Move History window
-        draw_move_history(screen, cube.move_history, font, history_rect, state.history_offset)
-        draw_solution(screen, state.solution_moves, font, solution_rect, state.solution_offset)
-
-        # Draw the Rubik's Cube faces
-        for face, (x, y) in FACE_POSITIONS.items():
-            if state.mode == "input":
-                face_colors = [
-                    [color_map(state.input_state.get_color(face.name, r, c)) for c in range(3)]
-                    for r in range(3)
-                ]
-                draw_face(x, y, face_colors)
-            else:
-                draw_face(x, y, cube.get_face(face))
+        if state.mode == "move":
+            render_move_mode(screen, cube, state, font)
+        else:
+            render_input_mode(screen, state, font)
 
         # Draw buttons
         active_buttons = move_buttons if state.mode == "move" else input_mode_buttons
@@ -378,33 +392,33 @@ def display_cube(cube: RubiksCube, scrambler: Scrambler):
                         elif button.text == "INPUT":
                             if state.mode == "move":
                                 state.mode = "input"
+                                state.draft_cube = deepcopy(cube)
                                 state.status_message = "Input Mode Active"
-                            else:
-                                state.mode = "move"
-                                state.status_message = "Move Mode Active"
-                        elif button.text in ["W", "Y", "R", "O", "B", "G"]:
+                        elif state.mode == "input" and button.text in ["W", "Y", "R", "O", "B", "G"]:
                             state.selected_color = button.text
                             state.status_message = f"Selected Color: {button.text}"
                         elif button.text == "VALIDATE":
                             is_valid, message = validate_input_state(state.input_state)
 
-                            if is_valid:
-                                state.status_message = "Cube Validated Successfully"
-                            else:
+                            if not is_valid:
                                 state.status_message = message
+                            else:
+                                try:
+                                    cube_string = convert_to_kociemba_string(state.input_state)
+                                    solver = Kociemba_Solver(cube_string)
+                                    state.solution_moves = solver.get_solution()
+                                    state.solution_offset = 0
+
+                                    state.status_message = "Solution Generated from Input"
+                                except Exception:
+                                    state.status_message = "Error solving cube"
                         elif button.text == "CANCEL":
                             state.mode = "move"
+                            state.draft_cube = None
                             state.status_message = "Input Cancelled"
                         else:
                             move = button.text
                             apply_move(cube, move)
-                    
-                    # Handle sticker clicks in input mode
-                    if state.mode == "input" and state.selected_color:
-                        result = get_clicked_sticker(event.pos)
-                        if result:
-                            face, row, col = result
-                            state.input_state.set_color(face.name, row, col, state.selected_color)
                     
                     # Handle sticker clicks in input mode (only if no button was clicked)
                     if not button_clicked and state.mode == "input" and state.selected_color:
