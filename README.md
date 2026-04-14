@@ -54,12 +54,22 @@ This keeps the main cube state safe while still allowing manual editing.
 
 ```text
 rubix-cube-solver/
+├── assets/
+│   ├── rubix_cube_architecture.png
+│   └── rubix_cube_input_flow.png
 ├── core/
 │   ├── __init__.py
 │   ├── cube.py
 │   ├── moves.py
 │   ├── pieces.py
 │   └── scramble.py
+├── screenshots/
+│   ├── editing.jpg
+│   ├── input_mode.jpg
+│   ├── scramble.jpg
+│   ├── solution.jpg
+│   ├── ui_default.jpg
+│   └── validation.jpg
 ├── solver/
 │   ├── __init__.py
 │   └── kociemba.py
@@ -72,20 +82,10 @@ rubix-cube-solver/
 │   ├── UI.py
 │   ├── buttons.py
 │   └── ui_state.py
-├── screenshots/
-│   ├── editing.jpg
-│   ├── input_mode.jpg
-│   ├── scramble.jpg
-│   ├── solution.jpg
-│   ├── ui_default.jpg
-│   └── validation.jpg
-├── uml/
-│   ├── plantuml.jar
-│   ├── rubix_cube.png
-│   └── rubix_cube.puml
+├── .gitignore
 ├── LICENSE
 ├── main.py
-├── main.spec
+├── README.md
 └── requirements.txt
 ```
 
@@ -96,7 +96,6 @@ rubix-cube-solver/
 - **Python**
 - **Pygame**
 - **Kociemba**
-- **PyInstaller** (for executable packaging)
 
 ---
 
@@ -160,19 +159,15 @@ python main.py
 
 ---
 
+## 🧱 System Architecture
 
-## 📐 UML
-
-A UML diagram for the project is included in the `uml/` folder.
-
-- `rubix_cube.puml` → PlantUML source
-- `rubix_cube.jpg` → rendered diagram
+![Architecture](assets/rubix_cube_architecture.png)
 
 ---
 
-## 🧱 System Design
+## 🔄 Input Validation Flow
 
-![Architecture](uml/rubix_cube.jpg)
+![Flow](assets/rubix_cube_input_flow.png)
 
 ---
 
