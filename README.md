@@ -80,9 +80,8 @@ rubix-cube-solver/
 │   ├── ui_default.jpg
 │   └── validation.jpg
 ├── uml/
-│   ├── plantuml.jar
-│   ├── rubix_cube.png
-│   └── rubix_cube.puml
+│   ├── rubix_cube.puml
+│   └── rubix_cube.jpg
 ├── LICENSE
 ├── main.py
 ├── main.spec
